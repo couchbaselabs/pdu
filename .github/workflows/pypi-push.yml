@@ -5,110 +5,110 @@ on:
       - "*"
 
 jobs:
-  build-source-archive:
-    name: Build source archive (sdist)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-        with:
-          submodules: recursive
-      - name: build sdist
-        run: |
-           python3 setup.py sdist
-      - uses: actions/upload-artifact@v4
-        with:
-            name: source-archive
-            path: dist/*.tar.gz
+  # build-source-archive:
+  #   name: Build source archive (sdist)
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         submodules: recursive
+  #     - name: build sdist
+  #       run: |
+  #          python3 setup.py sdist
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #           name: source-archive
+  #           path: dist/*.tar.gz
 
-  build-manylinux-3_X:
-    name: Build manylinux wheels (Python3.X)
-    runs-on: ubuntu-latest
-    env:
-        CIBW_BUILD: '{cp,pp}3*manylinux*x86_64'
-        CIBW_SKIP: '{cp,pp}3{6,7}*'
-        CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
-        CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
-    steps:
-      - uses: actions/checkout@master
-        with:
-          submodules: recursive
-      - name: build wheels
-        uses: pypa/cibuildwheel@v2.21.1
-      - uses: actions/upload-artifact@v4
-        with:
-            name: manylinux-3_X
-            path: wheelhouse/*.whl
-  build-musllinux-3_X:
-    name: Build musllinux wheels (Python3.X)
-    runs-on: ubuntu-latest
-    env:
-        CIBW_BUILD: '{cp,pp}3*musllinux*x86_64'
-        CIBW_SKIP: '{cp,pp}3{6,7}*'
-        CIBW_MUSLLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:muslinux_amd64"
-        CIBW_MUSLLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:muslinux_amd64"
-    steps:
-      - uses: actions/checkout@master
-        with:
-          submodules: recursive
-      - name: build wheels
-        uses: pypa/cibuildwheel@v2.21.1
-      - uses: actions/upload-artifact@v4
-        with:
-            name: musllinux-3_X
-            path: wheelhouse/*.whl
-  build-mac-3_X:
-    name: Build mac wheels (Python3.X)
-    runs-on: macos-12
-    env:
-        CIBW_BUILD: '{cp,pp}3*x86_64'
-        CIBW_SKIP: '{cp,pp}3{6,7}*'
-    steps:
-      - uses: actions/checkout@master
-        with:
-          submodules: recursive
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.9
-        with:
-          cmake-version: '3.30.3'
-      - name: build wheels
-        uses: pypa/cibuildwheel@v2.21.1
-      - uses: actions/upload-artifact@v4
-        with:
-            name: mac-3_X
-            path: wheelhouse/*.whl
-  build-mac-3_X-arm:
-    name: Build mac wheels (Python3.X + Arm)
-    runs-on: macos-12
-    env:
-        CONAN_MACOS_ARM64: "ON"
-        MACOSX_DEPLOYMENT_TARGET: "11"
-        CIBW_BUILD: '{cp,pp}3*arm64'
-        CIBW_SKIP: '{cp,pp}3{6,7}*'
-        CIBW_ARCHS_MACOS: 'arm64'
-    steps:
-      - uses: actions/checkout@master
-        with:
-          submodules: recursive
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.9
-        with:
-          cmake-version: '3.30.3'
-      - name: build wheels
-        uses: pypa/cibuildwheel@v2.21.1
-      - uses: actions/upload-artifact@v4
-        with:
-            name: mac-3_X-arm
-            path: wheelhouse/*.whl
+  # build-manylinux-3_X:
+  #   name: Build manylinux wheels (Python3.X)
+  #   runs-on: ubuntu-latest
+  #   env:
+  #       CIBW_BUILD: '{cp,pp}3*manylinux*x86_64'
+  #       CIBW_SKIP: '{cp,pp}3{6,7}*'
+  #       CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
+  #       CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         submodules: recursive
+  #     - name: build wheels
+  #       uses: pypa/cibuildwheel@v2.21.1
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #           name: manylinux-3_X
+  #           path: wheelhouse/*.whl
+  # build-musllinux-3_X:
+  #   name: Build musllinux wheels (Python3.X)
+  #   runs-on: ubuntu-latest
+  #   env:
+  #       CIBW_BUILD: '{cp,pp}3*musllinux*x86_64'
+  #       CIBW_SKIP: '{cp,pp}3{6,7}*'
+  #       CIBW_MUSLLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:muslinux_amd64"
+  #       CIBW_MUSLLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:muslinux_amd64"
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         submodules: recursive
+  #     - name: build wheels
+  #       uses: pypa/cibuildwheel@v2.21.1
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #           name: musllinux-3_X
+  #           path: wheelhouse/*.whl
+  # build-mac-3_X:
+  #   name: Build mac wheels (Python3.X)
+  #   runs-on: macos-12
+  #   env:
+  #       CIBW_BUILD: '{cp,pp}3*x86_64'
+  #       CIBW_SKIP: '{cp,pp}3{6,7}*'
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         submodules: recursive
+  #     - name: Setup vcpkg
+  #       uses: lukka/run-vcpkg@v11
+  #     - name: Setup cmake
+  #       uses: jwlawson/actions-setup-cmake@v1.9
+  #       with:
+  #         cmake-version: '3.30.3'
+  #     - name: build wheels
+  #       uses: pypa/cibuildwheel@v2.21.1
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #           name: mac-3_X
+  #           path: wheelhouse/*.whl
+  # build-mac-3_X-arm:
+  #   name: Build mac wheels (Python3.X + Arm)
+  #   runs-on: macos-12
+  #   env:
+  #       CONAN_MACOS_ARM64: "ON"
+  #       MACOSX_DEPLOYMENT_TARGET: "11"
+  #       CIBW_BUILD: '{cp,pp}3*arm64'
+  #       CIBW_SKIP: '{cp,pp}3{6,7}*'
+  #       CIBW_ARCHS_MACOS: 'arm64'
+  #   steps:
+  #     - uses: actions/checkout@master
+  #       with:
+  #         submodules: recursive
+  #     - name: Setup vcpkg
+  #       uses: lukka/run-vcpkg@v11
+  #     - name: Setup cmake
+  #       uses: jwlawson/actions-setup-cmake@v1.9
+  #       with:
+  #         cmake-version: '3.30.3'
+  #     - name: build wheels
+  #       uses: pypa/cibuildwheel@v2.21.1
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #           name: mac-3_X-arm
+  #           path: wheelhouse/*.whl
 
   build-manylinux-arm64:
     name: Build manylinux wheels (Python3.X ARM64)
     runs-on: ubuntu-latest
     env:
-        CIBW_BUILD: '{cp,pp}3*manylinux*aarch64'
+        CIBW_BUILD: 'cp3*-manylinux_aarch64'
         CIBW_SKIP: '{cp,pp}3{6,7}*'
         CIBW_MANYLINUX_AARCH64_IMAGE: "supportbot900/pypibuilders:manylinux_arm64"
         CIBW_MANYLINUX_PYPY_AARCH64_IMAGE: "supportbot900/pypibuilders:manylinux_arm64"
@@ -126,7 +126,7 @@ jobs:
   upload:
     name: Publish to PyPI
     runs-on: ubuntu-latest
-    needs: [build-source-archive, build-manylinux-3_X, build-musllinux-3_X, build-mac-3_X, build-mac-3_X-arm, build-manylinux-arm64]
+    needs: [build-manylinux-arm64]
     steps:
       - name: Create ./dist
         run: mkdir ./dist
