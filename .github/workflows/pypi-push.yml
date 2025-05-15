@@ -130,26 +130,26 @@ jobs:
     steps:
       - name: Create ./dist
         run: mkdir ./dist
-      - uses: actions/download-artifact@v4
-        with:
-            name: source-archive
-            path: dist
-      - uses: actions/download-artifact@v4
-        with:
-            name: manylinux-3_X
-            path: dist
-      - uses: actions/download-artifact@v4
-        with:
-            name: musllinux-3_X
-            path: dist
-      - uses: actions/download-artifact@v4
-        with:
-            name: mac-3_X
-            path: dist
-      - uses: actions/download-artifact@v4
-        with:
-            name: mac-3_X-arm
-            path: dist
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #       name: source-archive
+      #       path: dist
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #       name: manylinux-3_X
+      #       path: dist
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #       name: musllinux-3_X
+      #       path: dist
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #       name: mac-3_X
+      #       path: dist
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #       name: mac-3_X-arm
+      #       path: dist
       - uses: actions/download-artifact@v4
         with:
             name: manylinux-arm64
