@@ -106,7 +106,7 @@ jobs:
 
   build-manylinux-arm64:
     name: Build manylinux wheels (Python3.X ARM64)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     env:
         CIBW_PLATFORM: 'linux'
         CIBW_ARCHS: 'aarch64'
@@ -127,7 +127,7 @@ jobs:
 
   upload:
     name: Publish to PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: [build-manylinux-arm64]
     steps:
       - name: Create ./dist
