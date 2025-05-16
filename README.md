@@ -1,13 +1,13 @@
-# pypdu | pdu | pdump
+# couchbasepypdu | pdu | pdump
 
 This repo contains two small C++ tools, [`pdu`](#pdu) and [`pdump`](#pdump). These tools operate on Prometheus on-disk data, and provide insight into per-metric family disk usage and raw sample data respectively.
 
-In addition, [`pypdu`](#pypdu) provides Python bindings supporting basic operations on Prometheus data including iterating all time series, and all samples therein.
+In addition, [`couchbasepypdu`](#couchbasepypdu) provides Python bindings supporting basic operations on Prometheus data including iterating all time series, and all samples therein.
 
 
 Note: This has not been thoroughly tested across Prometheus versions; no compatibility guarantees are made.
 
-# pypdu
+# couchbasepypdu
 
 Python module capable of reading the time series data written to disk by Prometheus.
 
@@ -16,22 +16,22 @@ Python module capable of reading the time series data written to disk by Prometh
 Install from PyPI with `pip`:
 
 ```
-$ pip install pypdu
+$ pip install couchbasepypdu
 ```
 
 **NOTE**: Outdated `pip` versions may try to build from source even though a suitable package has been published. If pip downloads a `tar.gz` and you encounter compilation issues, ensure you have a up-to-date `pip`.
 
 Wheels are currently only built and published for MacOS and Linux.
 
-Unsupported platforms/architectures may still be able to use `pypdu` even though a wheel has not been published. Installing via pip will download the source and attempt to build it; ensure you have the [Prerequisites](#prerequisites).
+Unsupported platforms/architectures may still be able to use `couchbasepypdu` even though a wheel has not been published. Installing via pip will download the source and attempt to build it; ensure you have the [Prerequisites](#prerequisites).
 
 Basic usage example:
 
 ```
 #!/usr/bin/env python3
-import pypdu
+import couchbasepypdu
 
-data = pypdu.load("/path/to/stats_data")
+data = couchbasepypdu.load("/path/to/stats_data")
 
 for series in data:
     print(series.labels)
@@ -40,7 +40,7 @@ for series in data:
         print(f"{sample.timestamp} : {sample.value}")
 ```
 
-For further details on pypdu features and alternative installation methods, see [pypdu](./pypdu_README.md).
+For further details on couchbasepypdu features and alternative installation methods, see [couchbasepypdu](./pypdu_README.md).
 
 ---
 
@@ -214,7 +214,7 @@ labelKey labelValue
 
 Each section is separated by an empty line.
 
-Alternative output formats and filtering options may be implemented in the future. However, with [pypdu](#pypdu), arbitrary filtering and formatting can be done from Python instead.
+Alternative output formats and filtering options may be implemented in the future. However, with [couchbasepypdu](#couchbasepypdu), arbitrary filtering and formatting can be done from Python instead.
 
 ---
 
@@ -227,7 +227,7 @@ To build C++ tools you will need:
 * A modern C++ compiler (e.g., gcc, clang).
 * [vcpkg](https://vcpkg.io/) - [Installation instructions](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started). Used to manage C++ dependencies.
 
-In addition, to build `pypdu` from source:
+In addition, to build `couchbasepypdu` from source:
 
 * Python headers (typically provided by a `pythonX.X-dev` or `pythonX.X-devel` package)
 

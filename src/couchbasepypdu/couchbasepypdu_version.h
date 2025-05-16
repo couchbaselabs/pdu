@@ -1,5 +1,5 @@
 #pragma once
 
-#include "pypdu.h"
+#include "couchbasepypdu.h"
 
 void init_version(py::module_& m);

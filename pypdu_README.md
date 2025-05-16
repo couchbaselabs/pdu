@@ -1,18 +1,18 @@
-# pypdu
+# couchbasepypdu
 
 This module provides basic read-only access to the data contained in Prometheus on-disk files from Python.
 
-`pypdu` may be installed from pip (on linux and macOS):
+`couchbasepypdu` may be installed from pip (on linux and macOS):
 
 ```
-pip install pypdu
+pip install couchbasepypdu
 ```
 
-`pypdu` can optionally expose samples in a numpy array if `numpy` is installed.
-If you need this, you can either ensure `numpy` is installed, or have it pulled in by `pypdu` as a dependency with:
+`couchbasepypdu` can optionally expose samples in a numpy array if `numpy` is installed.
+If you need this, you can either ensure `numpy` is installed, or have it pulled in by `couchbasepypdu` as a dependency with:
 
 ```
-pip install pypdu[numpy]
+pip install couchbasepypdu[numpy]
 ```
 
 Example usage:
@@ -20,9 +20,9 @@ Example usage:
 ```
 #!/usr/bin/env python3
 
-import pypdu
+import couchbasepypdu
 
-data = pypdu.load("/path/to/stats_data")
+data = couchbasepypdu.load("/path/to/stats_data")
 
 for series in data:
     print(series.name) # equivalent to series.labels["__name__"]
@@ -49,7 +49,7 @@ for name, labels, samples in data:
 #### Conversion methods
 
 Manipulating large time series as lists-of-lists is likely to perform poorly in Python.
-pypdu can expose samples as a thin python wrapper around an underlying C++ type.
+couchbasepypdu can expose samples as a thin python wrapper around an underlying C++ type.
 
 This wrapper exposes "list like" operations:
 ```
@@ -61,13 +61,13 @@ This wrapper exposes "list like" operations:
 1664592572000
 ```
 
-pypdu also provides a convenience `to_list()`, with the same interface returning pure python types.
+couchbasepypdu also provides a convenience `to_list()`, with the same interface returning pure python types.
 
 These conversions can also apply some common manipulations to the time series:
 
 * Scaling the timestamps to seconds
 ```
-series.samples.as_vector(timestamp_units=pypdu.Seconds)
+series.samples.as_vector(timestamp_units=couchbasepypdu.Seconds)
 ```
 * Filtering NaN values out of the time series
 ```
@@ -100,7 +100,7 @@ RuntimeError: Accessing samples as a numpy array requires numpy to be installed
 
 #### Filtering time series
 
-If only a subset of the time series are desired, `pypdu` can filter them based on label values, and avoid parsing unneeded series at all:
+If only a subset of the time series are desired, `couchbasepypdu` can filter them based on label values, and avoid parsing unneeded series at all:
 
 ```
 for series in data.filter({"__name__":"sysproc_page_faults_raw"}):
@@ -117,7 +117,7 @@ data.filter({"__name__":"sysproc_page_faults_raw", "proc":"memcached"})
 ECMAScript regexes can also be used:
 
 ```
-data.filter({"proc":pypdu.regex("^go.*")})
+data.filter({"proc":couchbasepypdu.regex("^go.*")})
 ```
 
 Or even arbitrary Python callbacks:
@@ -181,7 +181,7 @@ This will lead to one sample _exactly_ every 10000 milliseconds. No interpolatio
 
 
 ```
-pypdu.irate(expr)
+couchbasepypdu.irate(expr)
 ```
 
 Results in a `Expression` which computes the instantaneous rate of change based on the current and previous sample - roughly equivalent to Prometheus `irate`.
@@ -191,7 +191,7 @@ e.g.,
 ```
 a = data["foobar"]
 b = data["bazqux"]
-rate = pypdu.irate(a+b/100)
+rate = couchbasepypdu.irate(a+b/100)
 for timestamp, rate_value in rate:
     ....
 ```
@@ -200,14 +200,14 @@ for timestamp, rate_value in rate:
 
 As `Expression` supports addition, the standard Python method `sum` can be used to add multiple series together.
 
-However, if working with a very large number of series, `pypdu.sum` may more efficiently construct the `Expression` result (computation of the summed `Samples` is identical, however).
+However, if working with a very large number of series, `couchbasepypdu.sum` may more efficiently construct the `Expression` result (computation of the summed `Samples` is identical, however).
 
 e.g.,
 
 ```
 series_list = list(data)
 py_sum_expr = sum(series_list)
-pdu_sum_expr = pypdu.sum(series_list) # may be faster if len(series_list) is large
+pdu_sum_expr = couchbasepypdu.sum(series_list) # may be faster if len(series_list) is large
 
 # but the resulting samples are identical
 assert(list(pdu_sum_expr) == list(py_sum_expr))
@@ -222,7 +222,7 @@ The histograms are exposed as `HistogramTimeSeries`, grouping all the component 
 e.g.,
 
 ```
-data = pypdu.load("<...>")
+data = couchbasepypdu.load("<...>")
 
 for histSeries in data.histograms:
     print("Labels: ", histSeries.labels)
@@ -313,7 +313,7 @@ For either of addition or subtraction, the bucket boundaries must exactly match.
 
 Time series may be dumped individually to a file or bytes. This may be useful if you need to store some number of series (e.g., in a key-value store), but don't wish to retain the entire Prometheus data directory.
 
-`pypdu.dump`/`pypdu.load` take an `int` file descriptor or, for convenience, a file-like object supporting `fileLike.fileno() -> int`.
+`couchbasepypdu.dump`/`couchbasepypdu.load` take an `int` file descriptor or, for convenience, a file-like object supporting `fileLike.fileno() -> int`.
 
 These methods be used to read/write data from/to a pipe or socket, not just a file on disk. Note, arbitrary file-like objects which are not backed by a file descriptor are not supported.
 
@@ -321,17 +321,17 @@ These methods be used to read/write data from/to a pipe or socket, not just a fi
 If provided a file handle which actually refers to a file on disk, `load` will try to mmap the file. If this fails, it will fall back to reading it like a stream. If mmapping is not desired, it can be disabled with:
 
 ```
-pypdu.load(fileDescriptor, allow_mmap=False)
+couchbasepypdu.load(fileDescriptor, allow_mmap=False)
 ```
 
-When `load`ing many series from a _stream_ (socket, pipe, etc), the underlying data for all Series will be read into memory - this may be costly if there are many Series. `pypdu.load_lazy` can instead be used to consume Series from a stream, one at a time.
+When `load`ing many series from a _stream_ (socket, pipe, etc), the underlying data for all Series will be read into memory - this may be costly if there are many Series. `couchbasepypdu.load_lazy` can instead be used to consume Series from a stream, one at a time.
 
 ```
-for series in pypdu.load_lazy(someSocket):
+for series in couchbasepypdu.load_lazy(someSocket):
     # series are read and deserialised on demand while iterating
 ```
 
-`pypdu.dumps` creates a `bytes` object, while `pypdu.loads` operates on a [buffer](https://docs.python.org/3/c-api/buffer.html). Anything supporting the buffer protocol exposing a contiguous buffer may be used. This includes `bytes` objects, but also `numpy` arrays and many other types.
+`couchbasepypdu.dumps` creates a `bytes` object, while `couchbasepypdu.loads` operates on a [buffer](https://docs.python.org/3/c-api/buffer.html). Anything supporting the buffer protocol exposing a contiguous buffer may be used. This includes `bytes` objects, but also `numpy` arrays and many other types.
 
 A [memoryview](https://docs.python.org/3/library/stdtypes.html#memoryview) may be used to slice a buffer, allowing deserialisation from _part_ of a buffer, without having to copy out the relevant bytes.
 
@@ -340,67 +340,67 @@ A [memoryview](https://docs.python.org/3/library/stdtypes.html#memoryview) may b
 ```
 # fd : int or file-like object with .fileno() method
 
-pypdu.dump(fd, series)
-pypdu.dump(fd, [series, series, ...])
-pypdu.dump(fd, PrometheusData)
+couchbasepypdu.dump(fd, series)
+couchbasepypdu.dump(fd, [series, series, ...])
+couchbasepypdu.dump(fd, PrometheusData)
 
 # note, dumps on a lot of series will consume a lot of memory building
 # a big bytes object
-pypdu.dumps(series) -> bytes
-pypdu.dumps([series, series, ...]) -> bytes
-pypdu.dumps(PrometheusData) -> bytes
+couchbasepypdu.dumps(series) -> bytes
+couchbasepypdu.dumps([series, series, ...]) -> bytes
+couchbasepypdu.dumps(PrometheusData) -> bytes
 
 # result of load{,s} depends on what was written
 # Deserialised series are entirely in-memory, may consume a lot of
 # memory.
-pypdu.load(fd) -> Series
-pypdu.load(fd) -> [Series, Series,...]
+couchbasepypdu.load(fd) -> Series
+couchbasepypdu.load(fd) -> [Series, Series,...]
 
-pypdu.loads(buffer) -> Series
-pypdu.loads(buffer) -> [Series, Series, ...]
+couchbasepypdu.loads(buffer) -> Series
+couchbasepypdu.loads(buffer) -> [Series, Series, ...]
 
 # when loading a lot of series, this is the advised way to avoid
 # holding them all in memory at the same time
-pypdu.load_lazy(fd) -> Iterable
+couchbasepypdu.load_lazy(fd) -> Iterable
 ```
 
 Example dumping and loading multiple series to/from a file:
 
 ```
 to_serialise = []
-for series in pypdu.load("foobar/baz/stats_data"):
+for series in couchbasepypdu.load("foobar/baz/stats_data"):
     if some_condition(series):
         to_serialise.append(series)
 
 with open("somefile", "wb") as f:
-    pypdu.dump(f, to_serialise)
+    couchbasepypdu.dump(f, to_serialise)
 ...
 with open("somefile", "rb") as f:
-    for series in pypdu.load_lazy(f):
+    for series in couchbasepypdu.load_lazy(f):
         # do something with the loaded series
 ```
 
 Example dumping and loading a single series to/from stdin/out:
 
 ```
-data = pypdu.load("foobar/baz/stats_data")
+data = couchbasepypdu.load("foobar/baz/stats_data")
 series = data["foobar_series_name"]
-pypdu.dump(sys.stdout, series)
+couchbasepypdu.dump(sys.stdout, series)
 
 ...
 
-series = pypdu.load(sys.stdin)
+series = couchbasepypdu.load(sys.stdin)
 ```
 
-#### pypdu.json
+#### couchbasepypdu.json
 
-For performance, pypdu provides a json encoder capable of efficiently dumping pypdu types.
+For performance, couchbasepypdu provides a json encoder capable of efficiently dumping couchbasepypdu types.
 It can also dump typical python types (everything supported by the builtin `json`), but is not a drop in replacement in terms of arguments.
 
 ```
-data = pypdu.load(...)
+data = couchbasepypdu.load(...)
 series = data["foobar"]
-pypdu.json.dumps(series)
+couchbasepypdu.json.dumps(series)
 ```
 
 will produce:
@@ -429,13 +429,13 @@ will produce:
 `dumps` also supports samples, sample vectors, and expressions:
 
 ```
->>> pypdu.json.dumps(series.samples)
+>>> couchbasepypdu.json.dumps(series.samples)
 "[[1664592572000, 0.0], [1664592582000, 0.0],...]"
->>> pypdu.json.dumps(series.samples.as_vector(timestamp_units=pypdu.Seconds))
+>>> couchbasepypdu.json.dumps(series.samples.as_vector(timestamp_units=couchbasepypdu.Seconds))
 "[[1664592572, 0.0], [1664592582, 0.0],...]"
->>> pypdu.json.dumps((series + 1) * 2)
+>>> couchbasepypdu.json.dumps((series + 1) * 2)
 "[[1664592572000, 2.0], [1664592582000, 2.0],...]"
->>> pypdu.json.dumps(((series + 1) * 2).as_vector(timestamp_units=pypdu.Seconds))
+>>> couchbasepypdu.json.dumps(((series + 1) * 2).as_vector(timestamp_units=couchbasepypdu.Seconds))
 "[[1664592572, 2.0], [1664592582, 2.0],...]"
 ```
 
@@ -447,10 +447,10 @@ For specific use cases, access to the raw [XOR encoded](https://github.com/prome
 
 To find the chunk objects for a given series:
 ```
->>> data = pypdu.load("some_stats_dir")
+>>> data = couchbasepypdu.load("some_stats_dir")
 >>> series = data["foobar_series_name"]
 >>> series.chunks
-[<pypdu.Chunk object at 0x11c29c270>, <pypdu.Chunk object at 0x11c29dbb0>, ...]
+[<couchbasepypdu.Chunk object at 0x11c29c270>, <couchbasepypdu.Chunk object at 0x11c29dbb0>, ...]
 ```
 
 To access the XOR encoded sample data:
@@ -465,35 +465,35 @@ To access the XOR encoded sample data:
 b'\x00y\xc8\xe0\x8e\...'
 ```
 
-Most users will not need to do this as `samples` can be read from a `pypdu.Series()`, with the chunks handled transparently.
+Most users will not need to do this as `samples` can be read from a `couchbasepypdu.Series()`, with the chunks handled transparently.
 
 
 #### Runtime version checking
 
-The `pypdu` version can be specified at install time (e.g., in `requirements.txt`), but you can also verify the correct version is available at runtime (maybe someone is building locally and forgot to update some dependencies!).
+The `couchbasepypdu` version can be specified at install time (e.g., in `requirements.txt`), but you can also verify the correct version is available at runtime (maybe someone is building locally and forgot to update some dependencies!).
 
 ```
->>> import pypdu
->>> pypdu.__version__
+>>> import couchbasepypdu
+>>> couchbasepypdu.__version__
 '0.0.12a3'
->>> pypdu.__git_rev__
+>>> couchbasepypdu.__git_rev__
 'a096f0d'
->>> pypdu.__git_tag__
+>>> couchbasepypdu.__git_tag__
 ''
->>> pypdu.require(0, 0, 0)
->>> pypdu.require(0, 0, 12)
->>> pypdu.require(0, 1, 0)
+>>> couchbasepypdu.require(0, 0, 0)
+>>> couchbasepypdu.require(0, 0, 12)
+>>> couchbasepypdu.require(0, 1, 0)
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-RuntimeError: Current pypdu version 0.0.12a3 does not meet required 0.1.0
->>> pypdu.require(0, 0, 12, "a3")
->>> pypdu.require(0, 0, 12, "a4")
+RuntimeError: Current couchbasepypdu version 0.0.12a3 does not meet required 0.1.0
+>>> couchbasepypdu.require(0, 0, 12, "a3")
+>>> couchbasepypdu.require(0, 0, 12, "a4")
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-RuntimeError: Current pypdu version 0.0.12a3 does not meet required 0.0.12a4
+RuntimeError: Current couchbasepypdu version 0.0.12a3 does not meet required 0.0.12a4
 ```
 
-If using a feature introduced in version `X.Y.Z`, `pypdu.require(X, Y, Z)` will raise an exception if an older version is in use.
+If using a feature introduced in version `X.Y.Z`, `couchbasepypdu.require(X, Y, Z)` will raise an exception if an older version is in use.
 This exception can be caught, if you want to provide a more specific error message (e.g., "Remember to update dependencies by running ...").
 
 
@@ -501,7 +501,7 @@ This exception can be caught, if you want to provide a more specific error messa
 
 ##### pip install from source
 
-If a wheel is not available for your platform or architecture, `pypdu` can be built and installed with:
+If a wheel is not available for your platform or architecture, `couchbasepypdu` can be built and installed with:
 
 ```
 pip install git+https://github.com/jameseh96/pdu.git
@@ -515,12 +515,12 @@ e.g.,
 pip install git+https://github.com/jameseh96/pdu.git@v0.0.19
 ```
 
-Building `pypdu` will require the dependencies listed in the [installation instructions](https://github.com/jameseh96/pdu#installing).
+Building `couchbasepypdu` will require the dependencies listed in the [installation instructions](https://github.com/jameseh96/pdu#installing).
 
-`pypdu` is relatively platform independent, but has not been tested on platforms/architectures that don't have a wheel built (e.g., Windows, MacOS+Apple Silicon) - be prepared for potential issues at build and runtime.
+`couchbasepypdu` is relatively platform independent, but has not been tested on platforms/architectures that don't have a wheel built (e.g., Windows, MacOS+Apple Silicon) - be prepared for potential issues at build and runtime.
 
 ##### setup.py
-`pypdu` may be installed without `pip`. To use, clone the repository as in the [installation instructions](https://github.com/jameseh96/pdu#installing).
+`couchbasepypdu` may be installed without `pip`. To use, clone the repository as in the [installation instructions](https://github.com/jameseh96/pdu#installing).
 
 Then run:
 
@@ -530,6 +530,6 @@ python setup.py install
 
 ##### manual .so
 
-Alternatively, following the `cmake` steps in the [installation instructions](https://github.com/jameseh96/pdu#installing) to build the project produces a module with a platform-dependent name - for example on MacOS this may be `pypdu.cpython-39-darwin.so`.
+Alternatively, following the `cmake` steps in the [installation instructions](https://github.com/jameseh96/pdu#installing) to build the project produces a module with a platform-dependent name - for example on MacOS this may be `couchbasepypdu.cpython-39-darwin.so`.
 
-This can be found either in `<build dir>/src/pypdu` or in your chosen installation prefix. This can be used without installing with `setup.py`, simply ensure the containing directory is in your `PYTHONPATH`.
+This can be found either in `<build dir>/src/couchbasepypdu` or in your chosen installation prefix. This can be used without installing with `setup.py`, simply ensure the containing directory is in your `PYTHONPATH`.

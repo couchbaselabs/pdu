@@ -45,7 +45,7 @@ void series_to_json(Writer<StringBuffer>& writer, const CrossIndexSeries& cis) {
 }
 
 void dispatch(Writer<StringBuffer>& writer, const py::handle& obj) {
-    // pypdu types
+    // couchbasepypdu types
     if (py::isinstance<SeriesSamples>(obj)) {
         samples_to_json(writer, obj.cast<const SeriesSamples&>().getIterator());
     } else if (py::isinstance<Expression>(obj)) {
@@ -84,7 +84,7 @@ void dispatch(Writer<StringBuffer>& writer, const py::handle& obj) {
         writer.EndArray();
     } else {
         throw py::type_error(fmt::format(
-                "pypdu.json: Object of type {} is not JSON serializable",
+                "couchbasepypdu.json: Object of type {} is not JSON serializable",
                 obj.attr("__class__").attr("__name__").cast<std::string>()));
     }
 }

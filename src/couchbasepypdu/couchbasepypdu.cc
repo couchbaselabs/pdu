@@ -1,4 +1,4 @@
-#include "pypdu.h"
+#include "couchbasepypdu.h"
 
 #include "pypdu_conversion_helpers.h"
 #include "pypdu_exceptions.h"
@@ -137,7 +137,7 @@ void makeXORPyChunks(const ChunkView& cv,
     }
 }
 
-PYBIND11_MODULE(pypdu, m) {
+PYBIND11_MODULE(couchbasepypdu, m) {
     m.doc() = "Python bindings to pdu, for reading Prometheus on-disk data";
 
     py::enum_<TimestampUnits>(m, "TimestampUnits")
