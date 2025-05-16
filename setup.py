@@ -145,7 +145,6 @@ setup(
     long_description=get_readme(),
     long_description_content_type='text/markdown',
     license="Apache License 2.0",
-    license_files=["LICENSE"],
     project_urls={
         'Source': 'https://github.com/couchbaselabs/pdu',
     },
@@ -157,6 +156,9 @@ setup(
     },
     install_requires=[],
     python_requires=">=3.8",
+    package_data={
+        "": ["LICENSE"],
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
