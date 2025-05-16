@@ -23,3 +23,10 @@ RUN git clone https://github.com/microsoft/vcpkg.git \
 
 ENV VCPKG_ROOT=/vcpkg
 ENV PATH="$PATH:$VCPKG_ROOT"
+
+# Install vcpkg dependencies
+COPY vcpkg.json /vcpkg.json
+RUN vcpkg install --triplet=arm64-linux --clean-after-build
+
+# Set CMAKE_TOOLCHAIN_FILE to use vcpkg
+ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
