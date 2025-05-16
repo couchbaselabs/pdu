@@ -1,21 +1,29 @@
 cmake_minimum_required(VERSION 3.17)
+
+# Set up vcpkg before project()
 if(NOT CMAKE_TOOLCHAIN_FILE)
-if (NOT DEFINED "$ENV{VCPKG_ROOT}")
-    message(WARNING "VCPKG_ROOT env var not found, install vcpkg and set the env var")
+    if (NOT DEFINED "$ENV{VCPKG_ROOT}")
+        message(WARNING "VCPKG_ROOT env var not found, install vcpkg and set the env var")
+    endif()
+    set(vcpkg "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+    if (NOT EXISTS "${vcpkg}")
+        set(vcpkg "$ENV{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake")
+    endif()
+    if (EXISTS "${vcpkg}")
+        set(CMAKE_TOOLCHAIN_FILE "${vcpkg}" CACHE FILEPATH "CMake toolchain file" FORCE)
+        message(STATUS "vcpkg toolchain found: ${CMAKE_TOOLCHAIN_FILE}")
+    else()
+        message(STATUS "vcpkg toolchain NOT found")
+    endif()
 endif()
-set(vcpkg "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-if (NOT EXISTS "${vcpkg}")
-set(vcpkg "$ENV{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake")
-endif()
-if (EXISTS "${vcpkg}")
-  set(CMAKE_TOOLCHAIN_FILE "${vcpkg}"
-      CACHE FILEPATH "CMake toolchain file")
-  message(STATUS "vcpkg toolchain found: ${CMAKE_TOOLCHAIN_FILE}")
-else()
-message(STATUS "vcpkg toolchain NOT found")
-endif()
-endif()
+
+# Set vcpkg overlay ports
 set(VCPKG_OVERLAY_PORTS "${CMAKE_SOURCE_DIR}/ports/overlay")
+
+# Set vcpkg triplet if not set
+if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+    set(VCPKG_TARGET_TRIPLET "arm64-linux" CACHE STRING "Vcpkg target triplet" FORCE)
+endif()
 
 project(prometheus_disk_usage)
 
