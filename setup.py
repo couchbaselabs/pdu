@@ -144,6 +144,8 @@ setup(
     description="Python bindings for C++ library for reading Prometheus on-disk data",
     long_description=get_readme(),
     long_description_content_type='text/markdown',
+    license="Apache License 2.0",
+    license_files=["LICENSE"],
     project_urls={
         'Source': 'https://github.com/couchbaselabs/pdu',
     },
@@ -154,4 +156,18 @@ setup(
         "numpy": ["numpy"]
     },
     install_requires=[],
+    python_requires=">=3.8",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: C++",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
 )
