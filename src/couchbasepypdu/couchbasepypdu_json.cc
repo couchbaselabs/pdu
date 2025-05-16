@@ -1,7 +1,7 @@
-#include "pypdu_json.h"
+#include "couchbasepypdu_json.h"
 
-#include "pypdu_expression.h"
-#include "pypdu_series_samples.h"
+#include "couchbasepypdu_expression.h"
+#include "couchbasepypdu_series_samples.h"
 
 #include "pdu/block/sample.h"
 

@@ -1,4 +1,4 @@
-#include "pypdu_histogram.h"
+#include "couchbasepypdu_histogram.h"
 
 #include <pdu/histogram/histogram.h>
 #include <pdu/histogram/histogram_iterator.h>

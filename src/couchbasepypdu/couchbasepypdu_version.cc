@@ -1,4 +1,4 @@
-#include "pypdu_version.h"
+#include "couchbasepypdu_version.h"
 
 // include generated version file, created from VERSION.txt and git info
 #include "generated_version.cc"

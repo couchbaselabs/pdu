@@ -1,4 +1,4 @@
-#include "pypdu_serialisation.h"
+#include "couchbasepypdu_serialisation.h"
 
 #include "pdu/block.h"
 #include "pdu/encode.h"
@@ -18,8 +18,8 @@
 
 #include <pybind11/stl_bind.h>
 
-#include "pypdu_boost_variant_helper.h"
-#include "pypdu_exceptions.h"
+#include "couchbasepypdu_boost_variant_helper.h"
+#include "couchbasepypdu_exceptions.h"
 
 int fdFromObj(py::object fileLike) {
     auto fdObj = fileLike.attr("fileno")();

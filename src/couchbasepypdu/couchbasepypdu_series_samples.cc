@@ -1,4 +1,4 @@
-#include "pypdu_series_samples.h"
+#include "couchbasepypdu_series_samples.h"
 
 #include "pdu/block/sample.h"
 
