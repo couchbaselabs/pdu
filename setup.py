@@ -55,6 +55,10 @@ class CMakeBuild(build_ext):
         ]
         build_args = []
 
+        # Add vcpkg toolchain file if available
+        if os.environ.get("CMAKE_TOOLCHAIN_FILE"):
+            cmake_args.append("-DCMAKE_TOOLCHAIN_FILE={}".format(os.environ["CMAKE_TOOLCHAIN_FILE"]))
+
         # In this example, we pass in the version to C++. You might not need to.
         cmake_args += [
             "-DPYPDU_VERSION={}".format(self.distribution.get_version())
