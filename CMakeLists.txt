@@ -25,7 +25,23 @@ if(NOT DEFINED VCPKG_TARGET_TRIPLET)
     set(VCPKG_TARGET_TRIPLET "arm64-linux" CACHE STRING "Vcpkg target triplet" FORCE)
 endif()
 
+# Configure Boost before project()
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+set(Boost_DEBUG ON)  # Enable debug output for Boost finding
+
 project(prometheus_disk_usage)
+
+# Find Boost components early
+find_package(Boost REQUIRED COMPONENTS program_options filesystem iostreams)
+if(NOT Boost_FOUND)
+    message(FATAL_ERROR "Boost not found. Please check vcpkg installation.")
+endif()
+
+message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
+message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 
 set(CMAKE_CXX_STANDARD 17)
 
