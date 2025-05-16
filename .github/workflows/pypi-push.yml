@@ -133,31 +133,14 @@ jobs:
     steps:
       - name: Create ./dist
         run: mkdir ./dist
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #       name: source-archive
-      #       path: dist
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #       name: manylinux-3_X
-      #       path: dist
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #       name: musllinux-3_X
-      #       path: dist
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #       name: mac-3_X
-      #       path: dist
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #       name: mac-3_X-arm
-      #       path: dist
       - uses: actions/download-artifact@v4
         with:
             name: manylinux-arm64
             path: dist
       - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine
+          python -m twine upload --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} dist/*
+        env:
+          PYTHONPATH: /usr/local/lib/python3.8/site-packages
