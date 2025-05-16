@@ -1,14 +1,14 @@
-#include "pypdu.h"
+#include "couchbasepypdu.h"
 
-#include "pypdu_conversion_helpers.h"
-#include "pypdu_exceptions.h"
-#include "pypdu_expression.h"
-#include "pypdu_histogram.h"
-#include "pypdu_json.h"
-#include "pypdu_numpy_check.h"
-#include "pypdu_serialisation.h"
-#include "pypdu_series_samples.h"
-#include "pypdu_version.h"
+#include "couchbasepypdu_conversion_helpers.h"
+#include "couchbasepypdu_exceptions.h"
+#include "couchbasepypdu_expression.h"
+#include "couchbasepypdu_histogram.h"
+#include "couchbasepypdu_json.h"
+#include "couchbasepypdu_numpy_check.h"
+#include "couchbasepypdu_serialisation.h"
+#include "couchbasepypdu_series_samples.h"
+#include "couchbasepypdu_version.h"
 
 #include <pdu/block/chunk_builder.h>
 #include <pdu/histogram/histogram_iterator.h>
@@ -137,7 +137,7 @@ void makeXORPyChunks(const ChunkView& cv,
     }
 }
 
-PYBIND11_MODULE(pypdu, m) {
+PYBIND11_MODULE(couchbasepypdu, m) {
     m.doc() = "Python bindings to pdu, for reading Prometheus on-disk data";
 
     py::enum_<TimestampUnits>(m, "TimestampUnits")

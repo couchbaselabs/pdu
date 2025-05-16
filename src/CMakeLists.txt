@@ -19,4 +19,4 @@ set_target_properties(pdu pdump
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
         )
 
-add_subdirectory(pypdu)
+add_subdirectory(couchbasepypdu)

@@ -5,11 +5,11 @@
  * If using musl (e.g., on alpine linux) this is not present, and will build but
  * fail to link when loaded:
  *
- * >>> import pypdu
+ * >>> import couchbasepypdu
  * Traceback (most recent call last):
  *  File "<stdin>", line 1, in <module>
  * ImportError: Error relocating
- * /pdu/build/lib.linux-x86_64-3.8/pypdu.cpython-38-x86_64-linux-gnu.so:
+ * /pdu/build/lib.linux-x86_64-3.8/couchbasepypdu.cpython-38-x86_64-linux-gnu.so:
  * __snprintf_chk: symbol not found
  *
  */

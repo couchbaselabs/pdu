@@ -1,7 +1,7 @@
 #pragma once
 
-#include "pypdu_numpy_check.h"
-#include "pypdu_series_samples.h"
+#include "couchbasepypdu_numpy_check.h"
+#include "couchbasepypdu_series_samples.h"
 
 #include "pdu/expression/expression.h"
 

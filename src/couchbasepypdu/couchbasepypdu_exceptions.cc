@@ -1,4 +1,4 @@
-#include "pypdu_exceptions.h"
+#include "couchbasepypdu_exceptions.h"
 
 #include <istream>
 
