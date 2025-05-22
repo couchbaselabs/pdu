@@ -137,17 +137,6 @@ jobs:
         with:
             name: manylinux-arm64
             path: dist
-
-      - name: Fix pyproject.toml license field if present
-        run: |
-          if [ -f pyproject.toml ]; then
-            echo "Patching pyproject.toml license metadata"
-            sed -i.bak 's/license-file *= */license-files = ["/' pyproject.toml
-            sed -i '' -e 's/LICENSE"/LICENSE"]/g' pyproject.toml || true
-            cat pyproject.toml
-          else
-            echo "No pyproject.toml found to patch"
-          fi
       - name: Publish distribution to PyPI
         run: |
           python -m pip install --upgrade pip
