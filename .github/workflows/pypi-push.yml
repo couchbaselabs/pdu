@@ -50,7 +50,7 @@ jobs:
           if [ "$(uname)" == "Darwin" ]; then
             brew install boost
           else
-            apt-get update && apt-get install -y libboost-all-dev
+            yum update -y && yum install -y boost-devel
           fi
       run: |
         python -m cibuildwheel --platform ${{ matrix.os == 'macos-latest' && 'macos' || 'linux' }} --output-dir wheelhouse
