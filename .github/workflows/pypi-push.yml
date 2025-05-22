@@ -5,6 +5,9 @@ on:
     branches:
       - "*"
 
+permissions:
+  contents: read
+
 jobs:
   build-wheels:
     name: Build wheels on ${{ matrix.os }}
@@ -53,6 +56,8 @@ jobs:
     needs: build-wheels
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
     steps:
     - uses: actions/download-artifact@v4
       with:
