@@ -172,5 +172,5 @@ setup(
         "Programming Language :: C++",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    license_files=["LICENSE"],
+    license_file="LICENSE",
 )
