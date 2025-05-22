@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         python-version: ['3.12']
 
     steps:
@@ -42,16 +42,18 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: brew install cmake
 
+    - name: Set up vcpkg
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.sh
+        echo "VCPKG_ROOT=$GITHUB_WORKSPACE/vcpkg" >> $GITHUB_ENV
+        ./vcpkg/vcpkg install --triplet x64-linux
+
     - name: Build wheels
       env:
         CIBW_ARCHS: "x86_64"  # Only build for AMD64
         CIBW_BUILD_VERBOSITY: 1
-        CIBW_BEFORE_BUILD: |
-          if [ "$(uname)" == "Darwin" ]; then
-            brew install boost
-          else
-            yum update -y && yum install -y boost-devel
-          fi
+        VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       run: |
         python -m cibuildwheel --platform ${{ matrix.os == 'macos-latest' && 'macos' || 'linux' }} --output-dir wheelhouse
 
