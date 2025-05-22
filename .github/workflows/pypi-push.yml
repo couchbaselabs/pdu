@@ -38,24 +38,20 @@ jobs:
       with:
         cmake-version: 'latest'
 
-    - name: Install Boost (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libboost-all-dev
-
     - name: Install CMake (macOS)
       if: matrix.os == 'macos-latest'
       run: brew install cmake
-
-    - name: Install Boost (macOS)
-      if: matrix.os == 'macos-latest'
-      run: brew install boost
 
     - name: Build wheels
       env:
         CIBW_ARCHS: "x86_64"  # Only build for AMD64
         CIBW_BUILD_VERBOSITY: 1
+        CIBW_BEFORE_BUILD: |
+          if [ "$(uname)" == "Darwin" ]; then
+            brew install boost
+          else
+            apt-get update && apt-get install -y libboost-all-dev
+          fi
       run: |
         python -m cibuildwheel --platform ${{ matrix.os == 'macos-latest' && 'macos' || 'linux' }} --output-dir wheelhouse
 
