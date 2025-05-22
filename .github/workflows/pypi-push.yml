@@ -38,9 +38,19 @@ jobs:
       with:
         cmake-version: 'latest'
 
+    - name: Install Boost (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libboost-all-dev
+
     - name: Install CMake (macOS)
       if: matrix.os == 'macos-latest'
       run: brew install cmake
+
+    - name: Install Boost (macOS)
+      if: matrix.os == 'macos-latest'
+      run: brew install boost
 
     - name: Build wheels
       env:
