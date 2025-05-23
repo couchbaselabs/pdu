@@ -50,6 +50,7 @@ jobs:
         run: |
           brew update
           curl -o cmake@3.27.1.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/508f2f8e825773d11e49fda0cad45c6db11d1742/Formula/cmake.rb
+          sed -i '' "s/class Cmake/class CMake/" cmake@3.27.1.rb
           brew install ./cmake@3.27.1.rb
           brew unlink cmake || true
           brew link --force cmake@3.27.1
@@ -77,6 +78,7 @@ jobs:
           CIBW_BEFORE_BUILD: >
             brew update &&
             curl -o cmake@3.27.1.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/508f2f8e825773d11e49fda0cad45c6db11d1742/Formula/cmake.rb &&
+            sed -i '' "s/class Cmake/class CMake/" cmake@3.27.1.rb &&
             brew install ./cmake@3.27.1.rb &&
             brew unlink cmake || true &&
             brew link --force cmake@3.27.1 &&
