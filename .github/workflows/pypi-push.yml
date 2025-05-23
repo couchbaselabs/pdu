@@ -37,6 +37,18 @@ jobs:
       CIBW_BUILD: 'cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64 cp311-macosx_arm64 cp312-macosx_arm64'
       CIBW_SKIP: '{cp,pp}3{6,7}*'
       VCPKG_ROOT: "/vcpkg"
+      CIBW_BEFORE_BUILD: >
+        export CC=/usr/bin/clang &&
+        export CXX=/usr/bin/clang++ &&
+        export CMAKE_MAKE_PROGRAM=/usr/bin/make &&
+        export CMAKE_C_COMPILER=/usr/bin/clang &&
+        export CMAKE_CXX_COMPILER=/usr/bin/clang++
+      CIBW_ENVIRONMENT: >
+        CC=/usr/bin/clang
+        CXX=/usr/bin/clang++
+        CMAKE_MAKE_PROGRAM=/usr/bin/make
+        CMAKE_C_COMPILER=/usr/bin/clang
+        CMAKE_CXX_COMPILER=/usr/bin/clang++
     steps:
       - uses: actions/checkout@master
         with:
