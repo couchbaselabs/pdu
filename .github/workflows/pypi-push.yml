@@ -79,8 +79,22 @@ jobs:
             export CMAKE_CXX_COMPILER=/usr/bin/clang++ &&
             export CMAKE_SYSTEM_NAME=Darwin &&
             export VCPKG_TARGET_TRIPLET=arm64-osx &&
+            export VCPKG_DEFAULT_TRIPLET=arm64-osx &&
+            export VCPKG_FORCE_SYSTEM_BINARIES=1 &&
             export PATH="/opt/homebrew/bin:$PATH" &&
             echo "Patchelf version: $(patchelf --version)"
+          CIBW_ENVIRONMENT: >
+            CMAKE_GENERATOR=Ninja
+            CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja
+            CC=/usr/bin/clang
+            CXX=/usr/bin/clang++
+            CMAKE_C_COMPILER=/usr/bin/clang
+            CMAKE_CXX_COMPILER=/usr/bin/clang++
+            CMAKE_SYSTEM_NAME=Darwin
+            VCPKG_TARGET_TRIPLET=arm64-osx
+            VCPKG_DEFAULT_TRIPLET=arm64-osx
+            VCPKG_FORCE_SYSTEM_BINARIES=1
+            PATH=/opt/homebrew/bin:$PATH
       - uses: actions/upload-artifact@v4
         with:
           name: mac-3_X-arm
