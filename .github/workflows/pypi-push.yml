@@ -36,7 +36,7 @@ jobs:
       CIBW_ARCHS: 'arm64'
       CIBW_BUILD: 'cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64 cp311-macosx_arm64 cp312-macosx_arm64'
       CIBW_SKIP: '{cp,pp}3{6,7}*'
-      VCPKG_ROOT: "/vcpkg"
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
       CC: /usr/bin/clang
       CXX: /usr/bin/clang++
       CMAKE_MAKE_PROGRAM: /usr/bin/make
