@@ -49,9 +49,8 @@ jobs:
       - name: Install build tools
         run: |
           brew update
-          curl -O https://cmake.org/files/v3.19/cmake-3.19.2-macos-universal.dmg
-          open cmake-3.19.2-macos-universal.dmg
-          brew install ninja patchelf
+          brew install cmake ninja patchelf
+          brew link --force cmake
           echo "CMake path: $(which cmake)"
           echo "Ninja path: $(which ninja)"
           echo "Clang path: $(which clang)"
@@ -74,15 +73,16 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: >
             brew update &&
-            curl -O https://cmake.org/files/v3.19/cmake-3.19.2-macos-universal.dmg &&
-            open cmake-3.19.2-macos-universal.dmg &&
-            brew install ninja patchelf &&
+            brew install cmake ninja patchelf &&
+            brew link --force cmake &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja &&
             export CC=/usr/bin/clang &&
             export CXX=/usr/bin/clang++ &&
             export CMAKE_C_COMPILER=/usr/bin/clang &&
             export CMAKE_CXX_COMPILER=/usr/bin/clang++ &&
+            export CMAKE_SYSTEM_NAME=Darwin &&
+            export VCPKG_TARGET_TRIPLET=arm64-osx &&
             export PATH="/opt/homebrew/bin:$PATH" &&
             echo "Patchelf version: $(patchelf --version)"
       - uses: actions/upload-artifact@v4
