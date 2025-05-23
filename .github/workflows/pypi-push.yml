@@ -42,7 +42,7 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Xcode
-        uses: actions/setup-xcode@v1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: 'latest'
       - name: Setup vcpkg
