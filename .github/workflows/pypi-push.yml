@@ -49,8 +49,11 @@ jobs:
       - name: Install build tools
         run: |
           brew update
-          brew install cmake ninja patchelf
-          brew link --force cmake
+          curl -o cmake@3.27.1.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/508f2f8e825773d11e49fda0cad45c6db11d1742/Formula/cmake.rb
+          brew install ./cmake@3.27.1.rb
+          brew unlink cmake || true
+          brew link --force cmake@3.27.1
+          brew install ninja patchelf
           echo "CMake path: $(which cmake)"
           echo "Ninja path: $(which ninja)"
           echo "Clang path: $(which clang)"
@@ -73,8 +76,11 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: >
             brew update &&
-            brew install cmake ninja patchelf &&
-            brew link --force cmake &&
+            curl -o cmake@3.27.1.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/508f2f8e825773d11e49fda0cad45c6db11d1742/Formula/cmake.rb &&
+            brew install ./cmake@3.27.1.rb &&
+            brew unlink cmake || true &&
+            brew link --force cmake@3.27.1 &&
+            brew install ninja patchelf &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja &&
             export CC=/usr/bin/clang &&
