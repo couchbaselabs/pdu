@@ -48,12 +48,14 @@ jobs:
           submodules: recursive
       - name: Install build tools
         run: |
-          brew install cmake ninja
-          which cmake
-          which ninja
-          which clang
-          which clang++
-          which make
+          brew update
+          brew install cmake@3.28 ninja
+          brew link --force cmake@3.28
+          echo "CMake path: $(which cmake)"
+          echo "Ninja path: $(which ninja)"
+          echo "Clang path: $(which clang)"
+          echo "Clang++ path: $(which clang++)"
+          echo "Make path: $(which make)"
           cmake --version
           clang --version
       - name: Setup Xcode
@@ -69,13 +71,16 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.1
         env:
           CIBW_BEFORE_BUILD: >
-            brew install cmake ninja &&
+            brew update &&
+            brew install cmake@3.28 ninja &&
+            brew link --force cmake@3.28 &&
             export CMAKE_GENERATOR=Ninja &&
-            export CMAKE_MAKE_PROGRAM=$(which ninja) &&
-            export CC=$(which clang) &&
-            export CXX=$(which clang++) &&
-            export CMAKE_C_COMPILER=$(which clang) &&
-            export CMAKE_CXX_COMPILER=$(which clang++)
+            export CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja &&
+            export CC=/usr/bin/clang &&
+            export CXX=/usr/bin/clang++ &&
+            export CMAKE_C_COMPILER=/usr/bin/clang &&
+            export CMAKE_CXX_COMPILER=/usr/bin/clang++ &&
+            export PATH="/opt/homebrew/bin:$PATH"
       - uses: actions/upload-artifact@v4
         with:
           name: mac-3_X-arm
