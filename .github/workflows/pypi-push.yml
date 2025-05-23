@@ -23,7 +23,7 @@ jobs:
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          vcpkgGitCommitId: '2024-02-14'
+          vcpkgGitCommitId: '8f54ef5453e7e76ff01e15988bf243e7247c5eb5'
           vcpkgDirectory: 'vcpkg'
       - name: Install ninja
         run: brew install ninja
