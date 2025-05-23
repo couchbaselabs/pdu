@@ -52,6 +52,7 @@ jobs:
           curl -O https://raw.githubusercontent.com/Homebrew/homebrew-core/508f2f8e825773d11e49fda0cad45c6db11d1742/Formula/cmake.rb
           brew unlink cmake || true
           brew install -s ./cmake.rb
+          brew link --force cmake
           brew install ninja patchelf
           echo "CMake path: $(which cmake)"
           echo "Ninja path: $(which ninja)"
@@ -78,6 +79,7 @@ jobs:
             curl -O https://raw.githubusercontent.com/Homebrew/homebrew-core/508f2f8e825773d11e49fda0cad45c6db11d1742/Formula/cmake.rb &&
             brew unlink cmake || true &&
             brew install -s ./cmake.rb &&
+            brew link --force cmake &&
             brew install ninja patchelf &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja &&
