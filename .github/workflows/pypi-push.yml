@@ -49,13 +49,14 @@ jobs:
       - name: Install build tools
         run: |
           brew update
-          brew install cmake ninja
+          brew install cmake ninja patchelf
           brew link --force cmake
           echo "CMake path: $(which cmake)"
           echo "Ninja path: $(which ninja)"
           echo "Clang path: $(which clang)"
           echo "Clang++ path: $(which clang++)"
           echo "Make path: $(which make)"
+          echo "Patchelf path: $(which patchelf)"
           cmake --version
           clang --version
       - name: Setup Xcode
@@ -72,7 +73,7 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: >
             brew update &&
-            brew install cmake ninja &&
+            brew install cmake ninja patchelf &&
             brew link --force cmake &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja &&
@@ -80,7 +81,8 @@ jobs:
             export CXX=/usr/bin/clang++ &&
             export CMAKE_C_COMPILER=/usr/bin/clang &&
             export CMAKE_CXX_COMPILER=/usr/bin/clang++ &&
-            export PATH="/opt/homebrew/bin:$PATH"
+            export PATH="/opt/homebrew/bin:$PATH" &&
+            echo "Patchelf version: $(patchelf --version)"
       - uses: actions/upload-artifact@v4
         with:
           name: mac-3_X-arm
