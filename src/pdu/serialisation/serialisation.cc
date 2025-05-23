@@ -18,7 +18,7 @@ void serialise_impl(Encoder& e, const ChunkReference& cr) {
     // note - minTime/maxTime should be changed to signed quantities
     // (for timestamps before the epoch), _but_ they are serialised/deserialised
     // as unsigned varints to remain compatible with existing serialised ts.
-    // Fixing this would be backwards incompatible with pypdu<0.1.6
+    // Fixing this would be backwards incompatible with couchbasepypdu<0.1.6
     e.write_varuint(cr.minTime);
     e.write_varuint(cr.maxTime);
 

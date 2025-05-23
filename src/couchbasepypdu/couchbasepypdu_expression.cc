@@ -1,7 +1,7 @@
-#include "pypdu_expression.h"
+#include "couchbasepypdu_expression.h"
 
-#include "pypdu_conversion_helpers.h"
-#include "pypdu_numpy_check.h"
+#include "couchbasepypdu_conversion_helpers.h"
+#include "couchbasepypdu_numpy_check.h"
 
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
