@@ -72,7 +72,7 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: >
             brew update &&
-            brew install cmake@ ninja &&
+            brew install cmake ninja &&
             brew link --force cmake &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja &&
