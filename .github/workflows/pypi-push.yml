@@ -41,10 +41,10 @@ jobs:
       - uses: actions/checkout@master
         with:
           submodules: recursive
-      - name: Install Xcode Command Line Tools
-        run: |
-          xcode-select --install || true
-          sudo xcodebuild -license accept
+      - name: Setup Xcode
+        uses: actions/setup-xcode@v1
+        with:
+          xcode-version: 'latest'
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
