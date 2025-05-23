@@ -5,38 +5,6 @@ on:
       - "*"
 
 jobs:
-  build-mac-3_X-arm:
-    name: Build mac wheels (Python3.X + Arm)
-    runs-on: macos-latest
-    env:
-      CONAN_MACOS_ARM64: "ON"
-      MACOSX_DEPLOYMENT_TARGET: "11"
-      CIBW_BUILD: '{cp,pp}3*arm64'
-      CIBW_SKIP: '{cp,pp}3{6,7}*'
-      CIBW_ARCHS_MACOS: 'arm64'
-      CMAKE_GENERATOR: "Ninja"
-      CMAKE_MAKE_PROGRAM: "ninja"
-    steps:
-      - uses: actions/checkout@master
-        with:
-          submodules: recursive
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: '8f54ef5453e7e76ff01e15988bf243e7247c5eb5'
-          vcpkgDirectory: 'vcpkg'
-      - name: Install ninja
-        run: brew install ninja
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.9
-        with:
-          cmake-version: '3.30.3'
-      - name: build wheels
-        uses: pypa/cibuildwheel@v2.21.1
-      - uses: actions/upload-artifact@v4
-        with:
-          name: mac-3_X-arm
-          path: wheelhouse/*.whl
 
   build-manylinux-arm64:
     name: Build manylinux wheels (Python3.X ARM64)
@@ -58,6 +26,26 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: manylinux-arm64
+          path: wheelhouse/*.whl
+
+  build-mac-3_X-arm:
+    name: Build macOS wheels (Python3.X ARM64)
+    runs-on: macos-latest
+    env:
+      CIBW_PLATFORM: 'macos'
+      CIBW_ARCHS: 'arm64'
+      CIBW_BUILD: 'cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64 cp311-macosx_arm64 cp312-macosx_arm64'
+      CIBW_SKIP: '{cp,pp}3{6,7}*'
+      VCPKG_ROOT: "/vcpkg"
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: recursive
+      - name: build wheels
+        uses: pypa/cibuildwheel@v2.21.1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mac-3_X-arm
           path: wheelhouse/*.whl
 
   upload:
