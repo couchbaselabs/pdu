@@ -7,7 +7,7 @@ on:
 jobs:
   build-mac-3_X-arm:
     name: Build mac wheels (Python3.X + Arm)
-    runs-on: macos-12
+    runs-on: macos-latest
     env:
       CONAN_MACOS_ARM64: "ON"
       MACOSX_DEPLOYMENT_TARGET: "11"
