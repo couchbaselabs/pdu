@@ -12,7 +12,7 @@ jobs:
     env:
       CIBW_PLATFORM: 'linux'
       CIBW_ARCHS: 'aarch64'
-      CIBW_BUILD: 'cp38-manylinux_aarch64 cp39-manylinux_aarch64 cp310-manylinux_aarch64 cp311-manylinux_aarch64 cp312-manylinux_aarch64'
+      CIBW_BUILD: 'cp38-manylinux_aarch64 cp39-manylinux_aarch64 cp310-manylinux_aarch64 cp311-manylinux_aarch64 cp312-manylinux_aarch64 cp313-manylinux_aarch64'
       CIBW_SKIP: '{cp,pp}3{6,7}*'
       CIBW_MANYLINUX_AARCH64_IMAGE: "supportbot900/pypibuilders:manylinux_arm64"
       CIBW_MANYLINUX_PYPY_AARCH64_IMAGE: "supportbot900/pypibuilders:manylinux_arm64"
@@ -34,7 +34,7 @@ jobs:
     env:
       CIBW_PLATFORM: 'macos'
       CIBW_ARCHS: 'arm64'
-      CIBW_BUILD: 'cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64 cp311-macosx_arm64 cp312-macosx_arm64'
+      CIBW_BUILD: 'cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64 cp311-macosx_arm64 cp312-macosx_arm64 cp313-macosx_arm64'
       CIBW_SKIP: '{cp,pp}3{6,7}*'
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
       VCPKG_TARGET_TRIPLET: 'arm64-osx'
