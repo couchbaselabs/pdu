@@ -41,7 +41,6 @@ jobs:
       VCPKG_ROOT: "/vcpkg"
       CIBW_BEFORE_ALL: >
         yum install -y gcc gcc-c++ make ninja-build &&
-        ln -sf /usr/bin/ninja-build /usr/bin/ninja &&
         echo "GCC version: $(gcc --version)" &&
         echo "G++ version: $(g++ --version)" &&
         echo "Ninja version: $(ninja --version)" &&
