@@ -97,7 +97,7 @@ jobs:
             /tmp/vcpkg/bootstrap-vcpkg.sh &&
             export VCPKG_ROOT=/tmp/vcpkg &&
             export CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake &&
-            /tmp/vcpkg/vcpkg install boost-program-options boost-filesystem boost-iostreams --triplet=x64-linux &&
+            /tmp/vcpkg/vcpkg install --triplet=x64-linux &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
             export CC=gcc &&
