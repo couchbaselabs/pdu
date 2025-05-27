@@ -39,6 +39,25 @@ jobs:
       CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
       CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
       VCPKG_ROOT: "/vcpkg"
+      CIBW_BEFORE_BUILD: >
+        yum install -y gcc gcc-c++ make ninja-build &&
+        export CC=/usr/bin/gcc &&
+        export CXX=/usr/bin/g++ &&
+        export CMAKE_C_COMPILER=/usr/bin/gcc &&
+        export CMAKE_CXX_COMPILER=/usr/bin/g++ &&
+        export CMAKE_GENERATOR=Ninja &&
+        export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
+        echo "GCC version: $(gcc --version)" &&
+        echo "G++ version: $(g++ --version)" &&
+        echo "Ninja version: $(ninja --version)" &&
+        echo "Make version: $(make --version)"
+      CIBW_ENVIRONMENT: >
+        CC=/usr/bin/gcc
+        CXX=/usr/bin/g++
+        CMAKE_C_COMPILER=/usr/bin/gcc
+        CMAKE_CXX_COMPILER=/usr/bin/g++
+        CMAKE_GENERATOR=Ninja
+        CMAKE_MAKE_PROGRAM=/usr/bin/ninja
     steps:
       - uses: actions/checkout@master
         with:
