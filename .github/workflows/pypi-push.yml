@@ -28,6 +28,28 @@ jobs:
           name: manylinux-arm64
           path: wheelhouse/*.whl
 
+  build-manylinux-amd64:
+    name: Build manylinux wheels (Python3.X AMD64)
+    runs-on: ubuntu-24.04
+    env:
+      CIBW_PLATFORM: 'linux'
+      CIBW_ARCHS: 'x86_64'
+      CIBW_BUILD: 'cp38-manylinux_x86_64 cp39-manylinux_x86_64 cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64 cp313-manylinux_x86_64'
+      CIBW_SKIP: '{cp,pp}3{6,7}*'
+      CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_28_x86_64"
+      CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "quay.io/pypa/manylinux_2_28_x86_64"
+      VCPKG_ROOT: "/vcpkg"
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: recursive
+      - name: build wheels
+        uses: pypa/cibuildwheel@v2.21.1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manylinux-amd64
+          path: wheelhouse/*.whl
+
   build-mac-3_X-arm:
     name: Build macOS wheels (Python3.X ARM64)
     runs-on: macos-latest
@@ -112,13 +134,17 @@ jobs:
   upload:
     name: Publish to PyPI
     runs-on: ubuntu-24.04-arm
-    needs: [build-manylinux-arm64, build-mac-3_X-arm]
+    needs: [build-manylinux-arm64, build-manylinux-amd64, build-mac-3_X-arm]
     steps:
       - name: Create ./dist
         run: mkdir ./dist
       - uses: actions/download-artifact@v4
         with:
           name: manylinux-arm64
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: manylinux-amd64
           path: dist
       - uses: actions/download-artifact@v4
         with:
