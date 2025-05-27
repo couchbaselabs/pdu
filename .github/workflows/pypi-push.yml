@@ -59,8 +59,22 @@ jobs:
         with:
           vcpkgGitCommitId: '8f54ef5453e7e76ff01e15988bf243e7247c5eb5'
           vcpkgDirectory: 'vcpkg'
+      - name: Setup compiler environment
+        run: |
+          source /opt/rh/devtoolset-10/enable
+          echo "GCC version: $(gcc --version)"
+          echo "G++ version: $(g++ --version)"
+          echo "CC: $CC"
+          echo "CXX: $CXX"
+          echo "CMAKE_C_COMPILER: $CMAKE_C_COMPILER"
+          echo "CMAKE_CXX_COMPILER: $CMAKE_CXX_COMPILER"
       - name: Install Boost dependencies
         run: |
+          source /opt/rh/devtoolset-10/enable
+          export CC=/opt/rh/devtoolset-10/root/usr/bin/gcc
+          export CXX=/opt/rh/devtoolset-10/root/usr/bin/g++
+          export CMAKE_C_COMPILER=/opt/rh/devtoolset-10/root/usr/bin/gcc
+          export CMAKE_CXX_COMPILER=/opt/rh/devtoolset-10/root/usr/bin/g++
           ${{ github.workspace }}/vcpkg/vcpkg install --triplet=x64-linux
       - name: Setup build environment
         run: |
