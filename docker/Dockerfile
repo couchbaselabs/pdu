@@ -1,4 +1,4 @@
-ARG ARCH=aarch64
+ARG ARCH=x86_64
 FROM quay.io/pypa/manylinux2014_${ARCH}:latest
 
 RUN yum install -y curl zip unzip tar make git gcc-c++ \
