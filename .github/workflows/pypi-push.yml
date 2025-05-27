@@ -97,7 +97,7 @@ jobs:
             /tmp/vcpkg/bootstrap-vcpkg.sh &&
             export VCPKG_ROOT=/tmp/vcpkg &&
             export CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake &&
-            export PATH="/usr/bin:$PATH" &&
+            export PATH="$PATH:/usr/bin" &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
             export CC=/usr/bin/gcc &&
@@ -114,9 +114,11 @@ jobs:
             echo "G++ version: $(g++ --version)" &&
             echo "Ninja version: $(ninja --version)" &&
             echo "CMake version: $(cmake --version)" &&
+            echo "Python path: $(which python)" &&
+            echo "Python version: $(python --version)" &&
             /tmp/vcpkg/vcpkg install --triplet=x64-linux
           CIBW_ENVIRONMENT: >
-            PATH=/usr/bin:$PATH
+            PATH=$PATH:/usr/bin
             CMAKE_GENERATOR=Ninja
             CMAKE_MAKE_PROGRAM=/usr/bin/ninja
             CC=/usr/bin/gcc
