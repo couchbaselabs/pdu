@@ -36,22 +36,9 @@ jobs:
       CIBW_ARCHS: 'x86_64'
       CIBW_BUILD: 'cp38-manylinux_x86_64 cp39-manylinux_x86_64 cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64 cp313-manylinux_x86_64'
       CIBW_SKIP: '{cp,pp}3{6,7}*'
-      CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_28_x86_64"
-      CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "quay.io/pypa/manylinux_2_28_x86_64"
+      CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
+      CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
       VCPKG_ROOT: "/vcpkg"
-      CIBW_BEFORE_BUILD: >
-        yum install -y boost-devel &&
-        export BOOST_ROOT=/usr &&
-        export BOOST_INCLUDEDIR=/usr/include &&
-        export BOOST_LIBRARYDIR=/usr/lib64 &&
-        echo "Boost version: $(rpm -q boost-devel)" &&
-        echo "BOOST_ROOT: $BOOST_ROOT" &&
-        echo "BOOST_INCLUDEDIR: $BOOST_INCLUDEDIR" &&
-        echo "BOOST_LIBRARYDIR: $BOOST_LIBRARYDIR"
-      CIBW_ENVIRONMENT: >
-        BOOST_ROOT=/usr
-        BOOST_INCLUDEDIR=/usr/include
-        BOOST_LIBRARYDIR=/usr/lib64
     steps:
       - uses: actions/checkout@master
         with:
