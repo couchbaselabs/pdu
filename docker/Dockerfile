@@ -1,6 +1,11 @@
 ARG ARCH=x86_64
 FROM quay.io/pypa/manylinux2014_${ARCH}:latest
 
+# Verify architecture
+RUN echo "Building for architecture: ${ARCH}" && \
+    uname -m && \
+    arch
+
 RUN yum install -y curl zip unzip tar make git gcc-c++ \
  && git clone https://github.com/ninja-build/ninja.git \
  && cd ninja \
@@ -11,10 +16,18 @@ RUN yum install -y curl zip unzip tar make git gcc-c++ \
  && rm -rf ninja
 
 # Install CMake 3.25 or newer
-RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-aarch64.sh \
+RUN echo "Installing CMake for architecture: ${ARCH}" && \
+    if [ "$(uname -m)" = "x86_64" ]; then \
+        echo "Using x86_64 CMake" && \
+        curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh; \
+    else \
+        echo "Using aarch64 CMake" && \
+        curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-aarch64.sh; \
+    fi \
  && chmod +x cmake.sh \
  && ./cmake.sh --skip-license --prefix=/usr/local \
- && rm cmake.sh
+ && rm cmake.sh \
+ && cmake --version
 
 ENV VCPKG_FORCE_SYSTEM_BINARIES=1
 RUN git clone https://github.com/microsoft/vcpkg.git \
@@ -26,7 +39,7 @@ ENV PATH="$PATH:$VCPKG_ROOT"
 
 # Install vcpkg dependencies
 COPY vcpkg.json /vcpkg.json
-RUN vcpkg install --triplet=arm64-linux --clean-after-build
+RUN vcpkg install --triplet=x64-linux --clean-after-build
 
 # Set CMAKE_TOOLCHAIN_FILE to use vcpkg
 ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
