@@ -91,8 +91,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.1
         env:
           CIBW_BEFORE_BUILD: >
-            export VCPKG_ROOT=/tmp/vcpkg &&
-            export CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake &&
+            export VCPKG_ROOT="${{ github.workspace }}/vcpkg" &&
             export PATH="$PATH:/usr/bin" &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
@@ -111,8 +110,7 @@ jobs:
             echo "Ninja version: $(ninja --version)" &&
             echo "CMake version: $(cmake --version)" &&
             echo "Python path: $(which python)" &&
-            echo "Python version: $(python --version)" &&
-            /tmp/vcpkg/vcpkg install --triplet=x64-linux
+            echo "Python version: $(python --version)"
           CIBW_ENVIRONMENT: >
             PATH=$PATH:/usr/bin
             CMAKE_GENERATOR=Ninja
@@ -126,8 +124,7 @@ jobs:
             VCPKG_TARGET_TRIPLET=x64-linux
             VCPKG_DEFAULT_TRIPLET=x64-linux
             DVCPKG_TARGET_TRIPLET=x64-linux
-            VCPKG_ROOT=/tmp/vcpkg
-            CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake
+            VCPKG_ROOT="${{ github.workspace }}/vcpkg"
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
           CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
       - uses: actions/upload-artifact@v4
