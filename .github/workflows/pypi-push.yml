@@ -28,7 +28,7 @@ jobs:
   #         name: manylinux-arm64
   #         path: wheelhouse/*.whl
 
-  build-manylinux-3_X:
+  build-manylinux-amd64:
     name: Build manylinux wheels (Python3.X)
     runs-on: ubuntu-latest
     env:
@@ -130,7 +130,7 @@ jobs:
 
   upload:
     name: Publish to PyPI
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-24.04
     needs: [build-manylinux-amd64]
     steps:
       - name: Create ./dist
