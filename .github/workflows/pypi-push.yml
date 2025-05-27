@@ -36,8 +36,8 @@ jobs:
       CIBW_ARCHS: 'x86_64'
       CIBW_BUILD: '{cp,pp}3*manylinux*x86_64'
       CIBW_SKIP: '{cp,pp}3{6,7}*'
-      CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
-      CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
+      CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
+      CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
       VCPKG_ROOT: "/vcpkg"
       VCPKG_TARGET_TRIPLET: "x64-linux"
       VCPKG_DEFAULT_TRIPLET: "x64-linux"
