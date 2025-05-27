@@ -54,6 +54,11 @@ jobs:
       - uses: actions/checkout@master
         with:
           submodules: recursive
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: '8f54ef5453e7e76ff01e15988bf243e7247c5eb5'
+          vcpkgDirectory: 'vcpkg'
       - name: Setup build environment
         run: |
           echo "Setting up build environment..."
