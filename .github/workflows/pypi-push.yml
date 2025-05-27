@@ -43,7 +43,6 @@ jobs:
       CXX: '/usr/bin/clang++'
       CMAKE_C_COMPILER: '/usr/bin/clang'
       CMAKE_CXX_COMPILER: '/usr/bin/clang++'
-      PATH: '/opt/homebrew/bin:$PATH'
     steps:
       - uses: actions/checkout@master
         with:
