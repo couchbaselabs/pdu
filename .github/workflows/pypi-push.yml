@@ -93,6 +93,7 @@ jobs:
           CMAKE_MAKE_PROGRAM: /usr/bin/ninja
           VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
           CIBW_BEFORE_BUILD: >
+            yum install -y ninja-build &&
             export VCPKG_ROOT="${{ github.workspace }}/vcpkg" &&
             export PATH="$PATH:/usr/bin" &&
             export CMAKE_GENERATOR=Ninja &&
@@ -112,7 +113,9 @@ jobs:
             echo "Ninja version: $(ninja --version)" &&
             echo "CMake version: $(cmake --version)" &&
             echo "Python path: $(which python)" &&
-            echo "Python version: $(python --version)"
+            echo "Python version: $(python --version)" &&
+            echo "VCPKG_ROOT: $VCPKG_ROOT" &&
+            echo "CMAKE_MAKE_PROGRAM: $CMAKE_MAKE_PROGRAM"
           CIBW_ENVIRONMENT: >
             PATH=$PATH:/usr/bin
             CMAKE_GENERATOR=Ninja
