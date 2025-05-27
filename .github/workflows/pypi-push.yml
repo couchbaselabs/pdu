@@ -91,10 +91,6 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.1
         env:
           CIBW_BEFORE_BUILD: >
-            yum update -y &&
-            yum install -y gcc gcc-c++ ninja-build cmake git zip &&
-            git clone https://github.com/Microsoft/vcpkg.git /tmp/vcpkg &&
-            /tmp/vcpkg/bootstrap-vcpkg.sh &&
             export VCPKG_ROOT=/tmp/vcpkg &&
             export CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake &&
             export PATH="$PATH:/usr/bin" &&
