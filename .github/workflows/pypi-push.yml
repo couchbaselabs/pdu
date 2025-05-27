@@ -49,6 +49,7 @@ jobs:
       - name: Install build tools
         run: |
           brew update
+          brew install ninja patchelf
           echo "CMake path: $(which cmake)"
           echo "Ninja path: $(which ninja)"
           echo "Clang path: $(which clang)"
@@ -71,6 +72,7 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: >
             brew update &&
+            brew install ninja patchelf &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/opt/homebrew/bin/ninja &&
             export CC=/usr/bin/clang &&
