@@ -97,26 +97,32 @@ jobs:
             /tmp/vcpkg/bootstrap-vcpkg.sh &&
             export VCPKG_ROOT=/tmp/vcpkg &&
             export CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake &&
-            /tmp/vcpkg/vcpkg install --triplet=x64-linux &&
+            export PATH="/usr/bin:$PATH" &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
-            export CC=gcc &&
-            export CXX=g++ &&
-            export CMAKE_C_COMPILER=gcc &&
-            export CMAKE_CXX_COMPILER=g++ &&
+            export CC=/usr/bin/gcc &&
+            export CXX=/usr/bin/g++ &&
+            export CMAKE_C_COMPILER=/usr/bin/gcc &&
+            export CMAKE_CXX_COMPILER=/usr/bin/g++ &&
             export CMAKE_SYSTEM_NAME=Linux &&
             export CMAKE_SYSTEM_PROCESSOR=x86_64 &&
             export VCPKG_TARGET_TRIPLET=x64-linux &&
             export VCPKG_DEFAULT_TRIPLET=x64-linux &&
             export DVCPKG_TARGET_TRIPLET=x64-linux &&
-            echo "Build environment setup complete"
+            echo "Build environment setup complete" &&
+            echo "GCC version: $(gcc --version)" &&
+            echo "G++ version: $(g++ --version)" &&
+            echo "Ninja version: $(ninja --version)" &&
+            echo "CMake version: $(cmake --version)" &&
+            /tmp/vcpkg/vcpkg install --triplet=x64-linux
           CIBW_ENVIRONMENT: >
+            PATH=/usr/bin:$PATH
             CMAKE_GENERATOR=Ninja
             CMAKE_MAKE_PROGRAM=/usr/bin/ninja
-            CC=gcc
-            CXX=g++
-            CMAKE_C_COMPILER=gcc
-            CMAKE_CXX_COMPILER=g++
+            CC=/usr/bin/gcc
+            CXX=/usr/bin/g++
+            CMAKE_C_COMPILER=/usr/bin/gcc
+            CMAKE_CXX_COMPILER=/usr/bin/g++
             CMAKE_SYSTEM_NAME=Linux
             CMAKE_SYSTEM_PROCESSOR=x86_64
             VCPKG_TARGET_TRIPLET=x64-linux
