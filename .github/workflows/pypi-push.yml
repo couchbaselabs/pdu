@@ -28,21 +28,14 @@ jobs:
   #         name: manylinux-arm64
   #         path: wheelhouse/*.whl
 
-  build-manylinux-amd64:
-    name: Build manylinux wheels (Python3.X AMD64)
-    runs-on: ubuntu-24.04
+  build-manylinux-3_X:
+    name: Build manylinux wheels (Python3.X)
+    runs-on: ubuntu-latest
     env:
-      CIBW_PLATFORM: 'linux'
-      CIBW_ARCHS: 'x86_64'
-      CIBW_BUILD: 'cp38-manylinux_x86_64 cp39-manylinux_x86_64 cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64 cp313-manylinux_x86_64'
-      CIBW_SKIP: '{cp,pp}3{6,7}*'
-      CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
-      CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
-      VCPKG_ROOT: "/vcpkg"
-      VCPKG_TARGET_TRIPLET: "x64-linux"
-      VCPKG_DEFAULT_TRIPLET: "x64-linux"
-      CMAKE_SYSTEM_NAME: "Linux"
-      CMAKE_SYSTEM_PROCESSOR: "x86_64"
+        CIBW_BUILD: '{cp,pp}3*manylinux*x86_64'
+        CIBW_SKIP: '{cp,pp}3{6,7}*'
+        CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
+        CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
     steps:
       - uses: actions/checkout@master
         with:
@@ -51,8 +44,8 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.1
       - uses: actions/upload-artifact@v4
         with:
-          name: manylinux-amd64
-          path: wheelhouse/*.whl
+            name: manylinux-3_X
+            path: wheelhouse/*.whl
 
   # build-mac-3_X-arm:
   #   name: Build macOS wheels (Python3.X ARM64)
