@@ -39,6 +39,10 @@ jobs:
       CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
       CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
       VCPKG_ROOT: "/vcpkg"
+      VCPKG_TARGET_TRIPLET: "x64-linux"
+      VCPKG_DEFAULT_TRIPLET: "x64-linux"
+      CMAKE_SYSTEM_NAME: "Linux"
+      CMAKE_SYSTEM_PROCESSOR: "x86_64"
     steps:
       - uses: actions/checkout@master
         with:
@@ -140,15 +144,7 @@ jobs:
         run: mkdir ./dist
       - uses: actions/download-artifact@v4
         with:
-          name: manylinux-arm64
-          path: dist
-      - uses: actions/download-artifact@v4
-        with:
           name: manylinux-amd64
-          path: dist
-      - uses: actions/download-artifact@v4
-        with:
-          name: mac-3_X-arm
           path: dist
       - name: Publish distribution to PyPI
         run: |
