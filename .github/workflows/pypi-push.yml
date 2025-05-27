@@ -92,7 +92,12 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: >
             yum update -y &&
-            yum install -y gcc gcc-c++ ninja-build cmake &&
+            yum install -y gcc gcc-c++ ninja-build cmake git &&
+            git clone https://github.com/Microsoft/vcpkg.git /tmp/vcpkg &&
+            /tmp/vcpkg/bootstrap-vcpkg.sh &&
+            export VCPKG_ROOT=/tmp/vcpkg &&
+            export CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake &&
+            /tmp/vcpkg/vcpkg install boost-program-options boost-filesystem boost-iostreams --triplet=x64-linux &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
             export CC=gcc &&
@@ -117,6 +122,8 @@ jobs:
             VCPKG_TARGET_TRIPLET=x64-linux
             VCPKG_DEFAULT_TRIPLET=x64-linux
             DVCPKG_TARGET_TRIPLET=x64-linux
+            VCPKG_ROOT=/tmp/vcpkg
+            CMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
           CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
       - uses: actions/upload-artifact@v4
