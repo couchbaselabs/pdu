@@ -91,8 +91,8 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.1
         env:
           CIBW_BEFORE_BUILD: >
-            apt-get update &&
-            apt-get install -y gcc g++ ninja-build cmake &&
+            yum update -y &&
+            yum install -y gcc gcc-c++ ninja-build cmake &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
             export CC=gcc &&
