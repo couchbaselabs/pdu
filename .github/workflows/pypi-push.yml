@@ -91,18 +91,34 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.1
         env:
           CIBW_BEFORE_BUILD: >
+            apt-get update &&
+            apt-get install -y gcc g++ ninja-build cmake &&
             export CMAKE_GENERATOR=Ninja &&
             export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
-            export CC=/usr/bin/gcc &&
-            export CXX=/usr/bin/g++ &&
-            export CMAKE_C_COMPILER=/usr/bin/gcc &&
-            export CMAKE_CXX_COMPILER=/usr/bin/g++ &&
+            export CC=gcc &&
+            export CXX=g++ &&
+            export CMAKE_C_COMPILER=gcc &&
+            export CMAKE_CXX_COMPILER=g++ &&
             export CMAKE_SYSTEM_NAME=Linux &&
             export CMAKE_SYSTEM_PROCESSOR=x86_64 &&
             export VCPKG_TARGET_TRIPLET=x64-linux &&
             export VCPKG_DEFAULT_TRIPLET=x64-linux &&
             export DVCPKG_TARGET_TRIPLET=x64-linux &&
             echo "Build environment setup complete"
+          CIBW_ENVIRONMENT: >
+            CMAKE_GENERATOR=Ninja
+            CMAKE_MAKE_PROGRAM=/usr/bin/ninja
+            CC=gcc
+            CXX=g++
+            CMAKE_C_COMPILER=gcc
+            CMAKE_CXX_COMPILER=g++
+            CMAKE_SYSTEM_NAME=Linux
+            CMAKE_SYSTEM_PROCESSOR=x86_64
+            VCPKG_TARGET_TRIPLET=x64-linux
+            VCPKG_DEFAULT_TRIPLET=x64-linux
+            DVCPKG_TARGET_TRIPLET=x64-linux
+          CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
+          CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "quay.io/pypa/manylinux2014_x86_64:latest"
       - uses: actions/upload-artifact@v4
         with:
             name: manylinux-3_X
