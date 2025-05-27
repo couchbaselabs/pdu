@@ -61,7 +61,7 @@ jobs:
           vcpkgDirectory: 'vcpkg'
       - name: Install Boost dependencies
         run: |
-          ${{ github.workspace }}/vcpkg/vcpkg install boost:x64-linux
+          ${{ github.workspace }}/vcpkg/vcpkg install --triplet=x64-linux
       - name: Setup build environment
         run: |
           echo "Setting up build environment..."
