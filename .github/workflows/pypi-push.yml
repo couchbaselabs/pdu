@@ -93,12 +93,6 @@ jobs:
         export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_RUNSTATEDIR=OFF &&
         export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_LIBEXECDIR=OFF &&
         export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_SBINDIR=OFF &&
-        export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_SYSCONFDIR=OFF &&
-        export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_LOCALSTATEDIR=OFF &&
-        export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_SHAREDSTATEDIR=OFF &&
-        export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_RUNSTATEDIR=OFF &&
-        export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_LIBEXECDIR=OFF &&
-        export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_SBINDIR=OFF &&
         echo "Using compiler: $CC" &&
         echo "Using C++ compiler: $CXX" &&
         echo "Using build tool: $CMAKE_MAKE_PROGRAM" &&
@@ -131,6 +125,81 @@ jobs:
           submodules: recursive
       - name: build wheels
         uses: pypa/cibuildwheel@v2.21.1
+        env:
+          CIBW_BEFORE_BUILD_LINUX: >
+            source /opt/rh/devtoolset-10/enable &&
+            export CC=/opt/rh/devtoolset-10/root/usr/bin/gcc &&
+            export CXX=/opt/rh/devtoolset-10/root/usr/bin/g++ &&
+            export PATH=/opt/rh/devtoolset-10/root/usr/bin:$PATH &&
+            export CMAKE_C_COMPILER=/opt/rh/devtoolset-10/root/usr/bin/gcc &&
+            export CMAKE_CXX_COMPILER=/opt/rh/devtoolset-10/root/usr/bin/g++ &&
+            export CMAKE_GENERATOR=Ninja &&
+            export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
+            export VCPKG_FORCE_SYSTEM_BINARIES=1 &&
+            export VCPKG_DEFAULT_TRIPLET=x64-linux &&
+            export VCPKG_TARGET_TRIPLET=x64-linux &&
+            export VCPKG_OVERLAY_TRIPLETS=/vcpkg/triplets &&
+            export VCPKG_OVERLAY_PORTS=/vcpkg/ports &&
+            export VCPKG_DOWNLOADS=/vcpkg/downloads &&
+            export VCPKG_INSTALLED_DIR=/vcpkg/installed &&
+            export VCPKG_MANIFEST_DIR=/project &&
+            export VCPKG_MANIFEST_INSTALL=ON &&
+            export VCPKG_FEATURE_FLAGS=manifests &&
+            export VCPKG_DISABLE_METRICS=ON &&
+            export VCPKG_SKIP_SYSTEM_BINARIES=OFF &&
+            export VCPKG_SKIP_SYSTEM_LIBRARIES=OFF &&
+            export VCPKG_SKIP_SYSTEM_INCLUDES=OFF &&
+            export VCPKG_SKIP_SYSTEM_TOOLS=OFF &&
+            export VCPKG_SKIP_SYSTEM_HEADERS=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE=OFF &&
+            export VCPKG_SKIP_SYSTEM_PYTHON=OFF &&
+            export VCPKG_SKIP_SYSTEM_NINJA=OFF &&
+            export VCPKG_SKIP_SYSTEM_CCACHE=OFF &&
+            export VCPKG_SKIP_SYSTEM_GIT=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_GENERATOR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_TOOLCHAIN=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_PLATFORM=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_ARCHITECTURE=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_BUILD_TYPE=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_PREFIX=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_LIBDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_BINDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_INCLUDEDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_DATADIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_DOCDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_MANDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_LOCALSTATEDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_SYSCONFDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_SHAREDSTATEDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_RUNSTATEDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_LIBEXECDIR=OFF &&
+            export VCPKG_SKIP_SYSTEM_CMAKE_INSTALL_SBINDIR=OFF &&
+            echo "Using compiler: $CC" &&
+            echo "Using C++ compiler: $CXX" &&
+            echo "Using build tool: $CMAKE_MAKE_PROGRAM" &&
+            echo "Using vcpkg triplet: $VCPKG_TARGET_TRIPLET" &&
+            which gcc &&
+            which g++ &&
+            which ninja
+          CIBW_ENVIRONMENT_LINUX: >
+            CC=/opt/rh/devtoolset-10/root/usr/bin/gcc
+            CXX=/opt/rh/devtoolset-10/root/usr/bin/g++
+            PATH=/opt/rh/devtoolset-10/root/usr/bin:$PATH
+            CMAKE_C_COMPILER=/opt/rh/devtoolset-10/root/usr/bin/gcc
+            CMAKE_CXX_COMPILER=/opt/rh/devtoolset-10/root/usr/bin/g++
+            CMAKE_GENERATOR=Ninja
+            CMAKE_MAKE_PROGRAM=/usr/bin/ninja
+            VCPKG_FORCE_SYSTEM_BINARIES=1
+            VCPKG_DEFAULT_TRIPLET=x64-linux
+            VCPKG_TARGET_TRIPLET=x64-linux
+            VCPKG_OVERLAY_TRIPLETS=/vcpkg/triplets
+            VCPKG_OVERLAY_PORTS=/vcpkg/ports
+            VCPKG_DOWNLOADS=/vcpkg/downloads
+            VCPKG_INSTALLED_DIR=/vcpkg/installed
+            VCPKG_MANIFEST_DIR=/project
+            VCPKG_MANIFEST_INSTALL=ON
+            VCPKG_FEATURE_FLAGS=manifests
+            VCPKG_DISABLE_METRICS=ON
       - uses: actions/upload-artifact@v4
         with:
           name: manylinux-amd64
