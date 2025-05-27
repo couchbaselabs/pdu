@@ -54,11 +54,6 @@ jobs:
       - uses: actions/checkout@master
         with:
           submodules: recursive
-      - name: Setup compiler environment
-        run: |
-          source /opt/rh/devtoolset-10/enable
-          echo "GCC version: $(gcc --version)"
-          echo "G++ version: $(g++ --version)"
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
@@ -66,9 +61,6 @@ jobs:
           vcpkgDirectory: 'vcpkg'
       - name: Install Boost dependencies
         run: |
-          source /opt/rh/devtoolset-10/enable
-          export CC=/opt/rh/devtoolset-10/root/usr/bin/gcc
-          export CXX=/opt/rh/devtoolset-10/root/usr/bin/g++
           ${{ github.workspace }}/vcpkg/vcpkg install --triplet=x64-linux
       - name: Setup build environment
         run: |
