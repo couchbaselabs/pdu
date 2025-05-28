@@ -44,6 +44,9 @@ if(NOT DEFINED VCPKG_TARGET_TRIPLET)
     set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "Vcpkg target triplet" FORCE)
 endif()
 
+# Force fmt to be header-only
+set(FMT_HEADER_ONLY ON CACHE BOOL "Use header-only fmt" FORCE)
+
 # Configure Boost before project()
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
