@@ -44,6 +44,10 @@ jobs:
           submodules: recursive
       - name: build wheels
         uses: pypa/cibuildwheel@v2.21.1
+        env:
+          CIBW_ENVIRONMENT: >
+            CMAKE_GENERATOR=Ninja
+            CMAKE_MAKE_PROGRAM=/usr/bin/ninja
       - uses: actions/upload-artifact@v4
         with:
             name: manylinux-amd64
