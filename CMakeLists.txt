@@ -33,12 +33,7 @@ set(VCPKG_OVERLAY_PORTS "${CMAKE_SOURCE_DIR}/ports/overlay")
 
 # Set vcpkg triplet if not set
 if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-    message(STATUS "CMake platform detection - APPLE: ${APPLE}")
-    if(APPLE)
-        set(VCPKG_TARGET_TRIPLET "arm64-osx" CACHE STRING "Vcpkg target triplet" FORCE)
-    else()
-        set(VCPKG_TARGET_TRIPLET "arm64-linux" CACHE STRING "Vcpkg target triplet" FORCE)
-    endif()
+    set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "Vcpkg target triplet" FORCE)
 endif()
 
 # Configure Boost before project()
