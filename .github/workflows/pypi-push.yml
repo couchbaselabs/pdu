@@ -36,6 +36,8 @@ jobs:
         CIBW_SKIP: '{cp,pp}3{6,7}*'
         CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
         CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
+        CMAKE_GENERATOR: "Ninja"
+        CMAKE_MAKE_PROGRAM: "/usr/bin/ninja"
     steps:
       - uses: actions/checkout@master
         with:
