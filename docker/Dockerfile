@@ -33,3 +33,4 @@ ENV CMAKE_GENERATOR=Ninja
 # Install vcpkg dependencies
 COPY vcpkg.json /vcpkg.json
 RUN vcpkg install --triplet=x64-linux --clean-after-build
+ENV CMAKE_MAKE_PROGRAM=/usr/bin/ninja
