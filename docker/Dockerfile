@@ -13,7 +13,7 @@ RUN yum install -y curl zip unzip tar make git gcc-c++ ninja-build \
  && ninja --version
 
 # Install CMake 3.25 or newer
-RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
+RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v4.0.2/cmake-4.0.2-linux-x86_64.sh \
  && chmod +x cmake.sh \
  && ./cmake.sh --skip-license --prefix=/usr/local \
  && rm cmake.sh \
