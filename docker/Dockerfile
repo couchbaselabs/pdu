@@ -43,3 +43,4 @@ RUN vcpkg install --triplet=x64-linux --clean-after-build
 
 # Set CMAKE_TOOLCHAIN_FILE to use vcpkg
 ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+ENV CMAKE_MAKE_PROGRAM=/usr/bin/ninja
