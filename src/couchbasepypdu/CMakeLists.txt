@@ -68,3 +68,5 @@ endif()
 if (NOT "${VERSION}" STREQUAL "${VERSION_}")
     file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/generated_version.cc "${VERSION}")
 endif()
+
+set(CMAKE_MAKE_PROGRAM "/usr/bin/ninja")
