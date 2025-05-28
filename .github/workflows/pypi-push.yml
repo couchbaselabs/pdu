@@ -45,6 +45,13 @@ jobs:
       - name: build wheels
         uses: pypa/cibuildwheel@v2.21.1
         env:
+          CIBW_BEFORE_BUILD: >
+            export CMAKE_GENERATOR=Ninja &&
+            export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
+            echo "Ninja version: $(ninja --version)" &&
+            echo "CMake version: $(cmake --version)" &&
+            echo "CMAKE_GENERATOR: $CMAKE_GENERATOR" &&
+            echo "CMAKE_MAKE_PROGRAM: $CMAKE_MAKE_PROGRAM"
           CIBW_ENVIRONMENT: >
             CMAKE_GENERATOR=Ninja
             CMAKE_MAKE_PROGRAM=/usr/bin/ninja
