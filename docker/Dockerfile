@@ -28,7 +28,6 @@ ENV PATH="$PATH:$VCPKG_ROOT"
 
 # Set CMake configuration
 ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
-ENV CMAKE_MAKE_PROGRAM=/usr/local/bin/ninja
 ENV CMAKE_GENERATOR=Ninja
 
 # Install vcpkg dependencies
