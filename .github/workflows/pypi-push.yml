@@ -40,6 +40,7 @@ jobs:
         VCPKG_TARGET_TRIPLET: "x64-linux"
         VCPKG_DEFAULT_TRIPLET: "x64-linux"
         VCPKG_FORCE_SYSTEM_BINARIES: "1"
+        CIBW_CMAKE_OPTIONS: "-DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_GENERATOR=Ninja"
     steps:
       - uses: actions/checkout@master
         with:
@@ -62,7 +63,8 @@ jobs:
             echo "VCPKG_ROOT: $VCPKG_ROOT" &&
             echo "VCPKG_TARGET_TRIPLET: $VCPKG_TARGET_TRIPLET" &&
             echo "GCC version: $(gcc --version)" &&
-            echo "G++ version: $(g++ --version)"
+            echo "G++ version: $(g++ --version)" &&
+            echo "CMake options: $CIBW_CMAKE_OPTIONS"
           CIBW_ENVIRONMENT: >
             CMAKE_GENERATOR=Ninja
             CMAKE_MAKE_PROGRAM=/usr/bin/ninja

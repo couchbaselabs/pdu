@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.17)
 
+# Set CMake generator and make program if not already set
+if(NOT DEFINED CMAKE_GENERATOR)
+    set(CMAKE_GENERATOR "Ninja" CACHE STRING "CMake generator" FORCE)
+endif()
+if(NOT DEFINED CMAKE_MAKE_PROGRAM)
+    set(CMAKE_MAKE_PROGRAM "/usr/bin/ninja" CACHE FILEPATH "CMake make program" FORCE)
+endif()
+
 # Set up vcpkg before project()
 if(NOT CMAKE_TOOLCHAIN_FILE)
     if (NOT DEFINED "$ENV{VCPKG_ROOT}")
@@ -89,5 +97,3 @@ list(PREPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}")
 
 add_subdirectory(src)
 add_subdirectory(test)
-
-set(CMAKE_MAKE_PROGRAM "/usr/bin/ninja")
