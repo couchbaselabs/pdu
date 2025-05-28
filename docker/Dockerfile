@@ -6,15 +6,9 @@ RUN echo "Building for architecture: ${ARCH}" && \
     uname -m && \
     arch
 
-RUN yum install -y curl zip unzip tar make git gcc-c++ \
- && git clone https://github.com/ninja-build/ninja.git \
- && cd ninja \
- && git checkout v1.11.1 \
- && ./configure.py --bootstrap \
- && cp ninja /usr/local/bin/ \
- && cd .. \
- && rm -rf ninja \
- && ninja --version
+RUN yum install epel-release -y
+
+RUN yum install -y curl zip unzip tar make git gcc-c++ ninja-build
 
 # Install CMake 3.25 or newer
 RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
