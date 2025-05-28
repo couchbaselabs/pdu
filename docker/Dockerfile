@@ -13,7 +13,8 @@ RUN yum install -y curl zip unzip tar make git gcc-c++ \
  && ./configure.py --bootstrap \
  && cp ninja /usr/local/bin/ \
  && cd .. \
- && rm -rf ninja
+ && rm -rf ninja \
+ && ninja --version
 
 # Install CMake 3.25 or newer
 RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
@@ -23,6 +24,7 @@ RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25
  && cmake --version
 
 ENV VCPKG_FORCE_SYSTEM_BINARIES=1
+ENV VCPKG_DEFAULT_TRIPLET=x64-linux
 RUN git clone https://github.com/microsoft/vcpkg.git \
  && cd vcpkg && git checkout 2024.09.30 \
  && ./bootstrap-vcpkg.sh -disableMetrics
@@ -34,7 +36,8 @@ ENV PATH="$PATH:$VCPKG_ROOT"
 ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
 ENV CMAKE_MAKE_PROGRAM=/usr/local/bin/ninja
 ENV CMAKE_GENERATOR=Ninja
+ENV CMAKE_GENERATOR_PLATFORM=x64
 
 # Install vcpkg dependencies
 COPY vcpkg.json /vcpkg.json
-RUN vcpkg install --triplet=x64-linux --clean-after-build;
+RUN vcpkg install --triplet=x64-linux --clean-after-build
