@@ -1,10 +1,9 @@
 name: Publish Python distributions to PyPI and TestPyPI
 on:
-  push:
+  pull_request:
     branches:
-      - "!*"
-    tags:
       - "*"
+
 jobs:
 
   build-manylinux-3_X:
