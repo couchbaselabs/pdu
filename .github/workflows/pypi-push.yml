@@ -28,46 +28,20 @@ jobs:
   #         name: manylinux-arm64
   #         path: wheelhouse/*.whl
 
-  build-manylinux-amd64:
-    name: Build manylinux wheels (Python3.X AMD64)
+  build-manylinux-3_X:
+    name: Build manylinux wheels (Python3.X)
     runs-on: ubuntu-24.04
     env:
-        CIBW_PLATFORM: 'linux'
-        CIBW_ARCHS: 'x86_64'
-        CIBW_BUILD: 'cp38-manylinux_x86_64 cp39-manylinux_x86_64 cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64 cp313-manylinux_x86_64'
+        CIBW_BUILD: '{cp,pp}3*manylinux*x86_64'
         CIBW_SKIP: '{cp,pp}3{6,7}*'
         CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
         CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
-        VCPKG_ROOT: "/vcpkg"
-        VCPKG_DEFAULT_TRIPLET: "x64-linux"
-        VCPKG_TARGET_TRIPLET: "x64-linux"
-        CMAKE_GENERATOR: "Ninja"
-        CMAKE_MAKE_PROGRAM: "/usr/bin/ninja"
     steps:
       - uses: actions/checkout@master
         with:
           submodules: recursive
       - name: build wheels
         uses: pypa/cibuildwheel@v2.21.1
-        env:
-          CIBW_BEFORE_BUILD: >
-            export VCPKG_DEFAULT_TRIPLET=x64-linux &&
-            export VCPKG_TARGET_TRIPLET=x64-linux &&
-            export CMAKE_GENERATOR=Ninja &&
-            export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
-            export VCPKG_FORCE_SYSTEM_BINARIES=1 &&
-            which ninja &&
-            ninja --version &&
-            echo "VCPKG_DEFAULT_TRIPLET: $VCPKG_DEFAULT_TRIPLET" &&
-            echo "VCPKG_TARGET_TRIPLET: $VCPKG_TARGET_TRIPLET" &&
-            echo "CMAKE_GENERATOR: $CMAKE_GENERATOR" &&
-            echo "CMAKE_MAKE_PROGRAM: $CMAKE_MAKE_PROGRAM"
-          CIBW_ENVIRONMENT: >
-            VCPKG_DEFAULT_TRIPLET=x64-linux
-            VCPKG_TARGET_TRIPLET=x64-linux
-            CMAKE_GENERATOR=Ninja
-            CMAKE_MAKE_PROGRAM=/usr/bin/ninja
-            VCPKG_FORCE_SYSTEM_BINARIES=1
       - uses: actions/upload-artifact@v4
         with:
             name: manylinux-amd64
@@ -157,7 +131,7 @@ jobs:
   upload:
     name: Publish to PyPI
     runs-on: ubuntu-24.04
-    needs: [build-manylinux-amd64]
+    needs: [build-manylinux-3_X]
     steps:
       - name: Create ./dist
         run: mkdir ./dist
