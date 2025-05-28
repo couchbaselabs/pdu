@@ -15,7 +15,7 @@ RUN yum install -y curl zip unzip tar make git gcc-c++ ninja-build \
 
 # Set compiler flags for C++17
 ENV CXXFLAGS="-std=c++17"
-ENV CFLAGS="-std=c17"
+ENV CFLAGS="-std=c11"
 
 # Install CMake 3.25 or newer
 RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
