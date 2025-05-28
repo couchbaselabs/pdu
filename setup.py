@@ -55,10 +55,6 @@ class CMakeBuild(build_ext):
         ]
         build_args = []
 
-        # Add vcpkg toolchain file if available
-        if os.environ.get("CMAKE_TOOLCHAIN_FILE"):
-            cmake_args.append("-DCMAKE_TOOLCHAIN_FILE={}".format(os.environ["CMAKE_TOOLCHAIN_FILE"]))
-
         # In this example, we pass in the version to C++. You might not need to.
         cmake_args += [
             "-DPYPDU_VERSION={}".format(self.distribution.get_version())
@@ -121,7 +117,7 @@ class CMakeBuild(build_ext):
             ["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp
         )
         subprocess.check_call(
-            ["cmake", "--build", ".", "--target", "couchbasepypdu"] + build_args, cwd=self.build_temp
+            ["cmake", "--build", ".", "--target", "pypdu"] + build_args, cwd=self.build_temp
         )
 
 
@@ -131,45 +127,27 @@ def get_readme():
 
 
 def get_version():
-    with open('src/couchbasepypdu/VERSION.txt') as f:
+    with open('src/pypdu/VERSION.txt') as f:
         return f.read().strip()
 
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
-    name="couchbasepypdu",
+    name="pypdu",
     version=get_version(),
-    author="support-bot",
+    author="jameseh96",
     author_email="",
     description="Python bindings for C++ library for reading Prometheus on-disk data",
     long_description=get_readme(),
     long_description_content_type='text/markdown',
-    license="Apache License 2.0",
     project_urls={
-        'Source': 'https://github.com/couchbaselabs/pdu',
+        'Source': 'https://github.com/jameseh96/pdu',
     },
-    ext_modules=[CMakeExtension("couchbasepypdu")],
+    ext_modules=[CMakeExtension("pypdu")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
     extras_require={
         "numpy": ["numpy"]
     },
     install_requires=[],
-    python_requires=">=3.8",
-    package_data={
-        "": ["LICENSE"],
-    },
-    classifiers=[
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: C++",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-    ],
 )

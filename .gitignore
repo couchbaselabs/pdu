@@ -3,9 +3,9 @@ cmake-build-debug/
 build/
 build-*/
 dist/
-couchbasepypdu.egg-info/
+pypdu.egg-info/
 wheelhouse/
-src/couchbasepypdu/generated_version.cc
+src/pypdu/generated_version.cc
 .eggs/
 .venv/
 .vscode/

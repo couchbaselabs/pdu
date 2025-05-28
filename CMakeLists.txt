@@ -1,73 +1,25 @@
 cmake_minimum_required(VERSION 3.17)
-
-# Set CMake generator and make program if not already set
-if(NOT DEFINED CMAKE_GENERATOR)
-    set(CMAKE_GENERATOR "Ninja" CACHE STRING "CMake generator" FORCE)
-endif()
-if(NOT DEFINED CMAKE_MAKE_PROGRAM)
-    set(CMAKE_MAKE_PROGRAM "/usr/bin/ninja" CACHE FILEPATH "CMake make program" FORCE)
-endif()
-
-# Set up vcpkg before project()
 if(NOT CMAKE_TOOLCHAIN_FILE)
-    if (NOT DEFINED "$ENV{VCPKG_ROOT}")
-        message(WARNING "VCPKG_ROOT env var not found, install vcpkg and set the env var")
-    endif()
-    set(vcpkg "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-    if (NOT EXISTS "${vcpkg}")
-        set(vcpkg "$ENV{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake")
-    endif()
-    if (EXISTS "${vcpkg}")
-        set(CMAKE_TOOLCHAIN_FILE "${vcpkg}" CACHE FILEPATH "CMake toolchain file" FORCE)
-        message(STATUS "vcpkg toolchain found: ${CMAKE_TOOLCHAIN_FILE}")
-    else()
-        message(STATUS "vcpkg toolchain NOT found")
-    endif()
+if (NOT DEFINED "$ENV{VCPKG_ROOT}")
+    message(WARNING "VCPKG_ROOT env var not found, install vcpkg and set the env var")
 endif()
-
-# Set compiler if not already set
-if(NOT DEFINED CMAKE_C_COMPILER)
-    if(APPLE)
-        set(CMAKE_C_COMPILER "/usr/bin/clang" CACHE STRING "C compiler" FORCE)
-        set(CMAKE_CXX_COMPILER "/usr/bin/clang++" CACHE STRING "C++ compiler" FORCE)
-    else()
-        set(CMAKE_C_COMPILER "/usr/bin/gcc" CACHE STRING "C compiler" FORCE)
-        set(CMAKE_CXX_COMPILER "/usr/bin/g++" CACHE STRING "C++ compiler" FORCE)
-    endif()
+set(vcpkg "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+if (NOT EXISTS "${vcpkg}")
+set(vcpkg "$ENV{HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 endif()
-
-# Set vcpkg overlay ports
+if (EXISTS "${vcpkg}")
+  set(CMAKE_TOOLCHAIN_FILE "${vcpkg}"
+      CACHE FILEPATH "CMake toolchain file")
+  message(STATUS "vcpkg toolchain found: ${CMAKE_TOOLCHAIN_FILE}")
+else()
+message(STATUS "vcpkg toolchain NOT found")
+endif()
+endif()
 set(VCPKG_OVERLAY_PORTS "${CMAKE_SOURCE_DIR}/ports/overlay")
-
-# Set vcpkg triplet if not set
-if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-    set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "Vcpkg target triplet" FORCE)
-endif()
-
-# Force fmt to be header-only
-set(FMT_HEADER_ONLY ON CACHE BOOL "Use header-only fmt" FORCE)
-
-# Configure Boost before project()
-set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-set(Boost_DEBUG ON)  # Enable debug output for Boost finding
 
 project(prometheus_disk_usage)
 
-# Find Boost components early
-find_package(Boost REQUIRED COMPONENTS program_options filesystem iostreams)
-if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Boost not found. Please check vcpkg installation.")
-endif()
-
-message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
-message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
-message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
-
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

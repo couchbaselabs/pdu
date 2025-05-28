@@ -1,5 +1,0 @@
-unknown flag: --progress
-
-Usage:  docker push [OPTIONS] NAME[:TAG]
-
-Run 'docker push --help' for more information
