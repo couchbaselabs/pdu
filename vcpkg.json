@@ -2,8 +2,7 @@
   "dependencies": [
     {
       "name": "fmt",
-      "version>=": "6.1.2",
-      "features": ["header-only"]
+      "version>=": "6.1.2"
     },
     {
       "name": "boost-algorithm",
@@ -53,8 +52,7 @@
   "overrides": [
     {
       "name": "fmt",
-      "version": "6.1.2",
-      "features": ["header-only"]
+      "version": "6.1.2"
     },
     {
       "name": "boost-algorithm",
@@ -100,6 +98,5 @@
       "name": "gtest",
       "version": "1.11.0"
     }
-  ],
-  "default-triplet": "x64-linux"
+  ]
 }
