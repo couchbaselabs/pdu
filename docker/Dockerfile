@@ -10,7 +10,12 @@ RUN yum install epel-release -y
 
 RUN yum install -y curl zip unzip tar make git gcc-c++ ninja-build \
  && which ninja \
- && ninja --version
+ && ninja --version \
+ && g++ --version
+
+# Set compiler flags for C++17
+ENV CXXFLAGS="-std=c++17"
+ENV CFLAGS="-std=c17"
 
 # Install CMake 3.25 or newer
 RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
