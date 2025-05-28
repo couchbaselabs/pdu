@@ -6,4 +6,6 @@ RUN git clone https://github.com/microsoft/vcpkg.git
 RUN cd vcpkg && git checkout 2024.09.30
 RUN ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 ENV VCPKG_ROOT=/vcpkg
+ENV CMAKE_GENERATOR=Ninja
+ENV CMAKE_MAKE_PROGRAM=/usr/bin/ninja
 ENV PATH="$PATH:$VCPKG_ROOT"
