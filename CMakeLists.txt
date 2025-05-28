@@ -89,3 +89,5 @@ list(PREPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}")
 
 add_subdirectory(src)
 add_subdirectory(test)
+
+set(CMAKE_MAKE_PROGRAM "/usr/bin/ninja")
