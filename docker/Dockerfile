@@ -8,7 +8,9 @@ RUN echo "Building for architecture: ${ARCH}" && \
 
 RUN yum install epel-release -y
 
-RUN yum install -y curl zip unzip tar make git gcc-c++ ninja-build
+RUN yum install -y curl zip unzip tar make git gcc-c++ ninja-build \
+ && which ninja \
+ && ninja --version
 
 # Install CMake 3.25 or newer
 RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
@@ -19,6 +21,7 @@ RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25
 
 ENV VCPKG_FORCE_SYSTEM_BINARIES=1
 ENV VCPKG_DEFAULT_TRIPLET=x64-linux
+ENV VCPKG_TARGET_TRIPLET=x64-linux
 RUN git clone https://github.com/microsoft/vcpkg.git \
  && cd vcpkg && git checkout 2024.09.30 \
  && ./bootstrap-vcpkg.sh -disableMetrics
@@ -29,8 +32,8 @@ ENV PATH="$PATH:$VCPKG_ROOT"
 # Set CMake configuration
 ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
 ENV CMAKE_GENERATOR=Ninja
+ENV CMAKE_MAKE_PROGRAM=/usr/bin/ninja
 
 # Install vcpkg dependencies
 COPY vcpkg.json /vcpkg.json
 RUN vcpkg install --triplet=x64-linux --clean-after-build
-ENV CMAKE_MAKE_PROGRAM=/usr/bin/ninja

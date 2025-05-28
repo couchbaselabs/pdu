@@ -39,12 +39,35 @@ jobs:
         CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
         CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
         VCPKG_ROOT: "/vcpkg"
+        VCPKG_DEFAULT_TRIPLET: "x64-linux"
+        VCPKG_TARGET_TRIPLET: "x64-linux"
+        CMAKE_GENERATOR: "Ninja"
+        CMAKE_MAKE_PROGRAM: "/usr/bin/ninja"
     steps:
       - uses: actions/checkout@master
         with:
           submodules: recursive
       - name: build wheels
         uses: pypa/cibuildwheel@v2.21.1
+        env:
+          CIBW_BEFORE_BUILD: >
+            export VCPKG_DEFAULT_TRIPLET=x64-linux &&
+            export VCPKG_TARGET_TRIPLET=x64-linux &&
+            export CMAKE_GENERATOR=Ninja &&
+            export CMAKE_MAKE_PROGRAM=/usr/bin/ninja &&
+            export VCPKG_FORCE_SYSTEM_BINARIES=1 &&
+            which ninja &&
+            ninja --version &&
+            echo "VCPKG_DEFAULT_TRIPLET: $VCPKG_DEFAULT_TRIPLET" &&
+            echo "VCPKG_TARGET_TRIPLET: $VCPKG_TARGET_TRIPLET" &&
+            echo "CMAKE_GENERATOR: $CMAKE_GENERATOR" &&
+            echo "CMAKE_MAKE_PROGRAM: $CMAKE_MAKE_PROGRAM"
+          CIBW_ENVIRONMENT: >
+            VCPKG_DEFAULT_TRIPLET=x64-linux
+            VCPKG_TARGET_TRIPLET=x64-linux
+            CMAKE_GENERATOR=Ninja
+            CMAKE_MAKE_PROGRAM=/usr/bin/ninja
+            VCPKG_FORCE_SYSTEM_BINARIES=1
       - uses: actions/upload-artifact@v4
         with:
             name: manylinux-amd64
