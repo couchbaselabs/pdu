@@ -16,14 +16,7 @@ RUN yum install -y curl zip unzip tar make git gcc-c++ \
  && rm -rf ninja
 
 # Install CMake 3.25 or newer
-RUN echo "Installing CMake for architecture: ${ARCH}" && \
-    if [ "$(uname -m)" = "x86_64" ]; then \
-        echo "Using x86_64 CMake" && \
-        curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh; \
-    else \
-        echo "Using aarch64 CMake" && \
-        curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-aarch64.sh; \
-    fi \
+RUN curl -L -o cmake.sh https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh \
  && chmod +x cmake.sh \
  && ./cmake.sh --skip-license --prefix=/usr/local \
  && rm cmake.sh \
@@ -37,10 +30,11 @@ RUN git clone https://github.com/microsoft/vcpkg.git \
 ENV VCPKG_ROOT=/vcpkg
 ENV PATH="$PATH:$VCPKG_ROOT"
 
+# Set CMake configuration
+ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+ENV CMAKE_MAKE_PROGRAM=/usr/local/bin/ninja
+ENV CMAKE_GENERATOR=Ninja
+
 # Install vcpkg dependencies
 COPY vcpkg.json /vcpkg.json
-RUN vcpkg install --triplet=x64-linux --clean-after-build
-
-# Set CMAKE_TOOLCHAIN_FILE to use vcpkg
-ENV CMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
-ENV CMAKE_MAKE_PROGRAM=/usr/bin/ninja
+RUN vcpkg install --triplet=x64-linux --clean-after-build;
