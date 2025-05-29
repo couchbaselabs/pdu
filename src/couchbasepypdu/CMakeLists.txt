@@ -1,31 +1,31 @@
 cmake_minimum_required(VERSION 3.17)
-project(pypdu)
+project(couchbasepypdu)
 
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(RapidJSON CONFIG REQUIRED)
 
 add_subdirectory(../../third_party/pybind11 ${CMAKE_CURRENT_BINARY_DIR}/pybind11)
-pybind11_add_module(pypdu
-        pypdu.cc
-        pypdu_conversion_helpers.cc
-        pypdu_histogram.cc
-        pypdu_json.cc
-        pypdu_serialisation.cc
-        pypdu_series_samples.cc
-        pypdu_numpy_check.cc
-        pypdu_version.cc
-        pypdu_exceptions.cc
-        pypdu_expression.cc)
+pybind11_add_module(couchbasepypdu
+        couchbasepypdu.cc
+        couchbasepypdu_conversion_helpers.cc
+        couchbasepypdu_histogram.cc
+        couchbasepypdu_json.cc
+        couchbasepypdu_serialisation.cc
+        couchbasepypdu_series_samples.cc
+        couchbasepypdu_numpy_check.cc
+        couchbasepypdu_version.cc
+        couchbasepypdu_exceptions.cc
+        couchbasepypdu_expression.cc)
 
-set_property(TARGET pypdu PROPERTY CXX_VISIBILITY_PRESET hidden)
+set_property(TARGET couchbasepypdu PROPERTY CXX_VISIBILITY_PRESET hidden)
 
 # EXAMPLE_VERSION_INFO is defined by setup.py and passed into the C++ code as a
 # define (VERSION_INFO) here.
-target_compile_definitions(pypdu PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO}
+target_compile_definitions(couchbasepypdu PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO}
                                          PYTHON_VERSION_MAJOR=${PYTHON_VERSION_MAJOR})
 
-target_link_libraries(pypdu PUBLIC plib rapidjson)
+target_link_libraries(couchbasepypdu PUBLIC plib rapidjson)
 
 
 # determine git revision
@@ -68,3 +68,5 @@ endif()
 if (NOT "${VERSION}" STREQUAL "${VERSION_}")
     file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/generated_version.cc "${VERSION}")
 endif()
+
+set(CMAKE_MAKE_PROGRAM "/usr/bin/ninja")

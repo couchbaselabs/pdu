@@ -52,3 +52,7 @@ list(PREPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}")
 
 add_subdirectory(src)
 add_subdirectory(test)
+
+set(CMAKE_MAKE_PROGRAM /usr/bin/ninja)
+set(CMAKE_C_COMPILER /usr/bin/gcc)
+set(CMAKE_CXX_COMPILER /usr/bin/g++)

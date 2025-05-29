@@ -1,4 +1,4 @@
-#include "pypdu_version.h"
+#include "couchbasepypdu_version.h"
 
 // include generated version file, created from VERSION.txt and git info
 #include "generated_version.cc"
@@ -56,7 +56,7 @@ void init_version(py::module_& m) {
                 Version current = get_version();
                 if (current < required) {
                     throw std::runtime_error(
-                            fmt::format("Current pypdu version {} does not "
+                            fmt::format("Current couchbasepypdu version {} does not "
                                         "meet required {}",
                                         current,
                                         required));

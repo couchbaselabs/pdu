@@ -1,5 +1,5 @@
 #pragma once
 
-#include "pypdu.h"
+#include "couchbasepypdu.h"
 
 bool numpy_available(py::module m);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pypdu.h"
+#include "couchbasepypdu.h"
 
 namespace pybind11 {
 // insert EOFError into the pybind namespace, for convenience.

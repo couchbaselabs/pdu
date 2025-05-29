@@ -117,7 +117,7 @@ class CMakeBuild(build_ext):
             ["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp
         )
         subprocess.check_call(
-            ["cmake", "--build", ".", "--target", "pypdu"] + build_args, cwd=self.build_temp
+            ["cmake", "--build", ".", "--target", "couchbasepypdu"] + build_args, cwd=self.build_temp
         )
 
 
@@ -127,13 +127,13 @@ def get_readme():
 
 
 def get_version():
-    with open('src/pypdu/VERSION.txt') as f:
+    with open('src/couchbasepypdu/VERSION.txt') as f:
         return f.read().strip()
 
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
-    name="pypdu",
+    name="couchbasepypdu",
     version=get_version(),
     author="jameseh96",
     author_email="",
@@ -143,7 +143,7 @@ setup(
     project_urls={
         'Source': 'https://github.com/jameseh96/pdu',
     },
-    ext_modules=[CMakeExtension("pypdu")],
+    ext_modules=[CMakeExtension("couchbasepypdu")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
     extras_require={

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pypdu.h"
+#include "couchbasepypdu.h"
 
 #include <pdu/expression/expression.h>
 #include <pdu/pdu.h>

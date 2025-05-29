@@ -1,5 +1,5 @@
 #pragma once
 
-#include "pypdu.h"
+#include "couchbasepypdu.h"
 
 void def_serial(py::module m);

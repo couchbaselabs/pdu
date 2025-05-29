@@ -1,4 +1,4 @@
-#include "pypdu_numpy_check.h"
+#include "couchbasepypdu_numpy_check.h"
 
 bool numpy_available_inner(py::module m) {
     try {

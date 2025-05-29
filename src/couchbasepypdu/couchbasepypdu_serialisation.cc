@@ -1,4 +1,4 @@
-#include "pypdu_serialisation.h"
+#include "couchbasepypdu_serialisation.h"
 
 #include "pdu/block.h"
 #include "pdu/encode.h"
@@ -18,8 +18,8 @@
 
 #include <pybind11/stl_bind.h>
 
-#include "pypdu_boost_variant_helper.h"
-#include "pypdu_exceptions.h"
+#include "couchbasepypdu_boost_variant_helper.h"
+#include "couchbasepypdu_exceptions.h"
 
 int fdFromObj(py::object fileLike) {
     auto fdObj = fileLike.attr("fileno")();
@@ -230,32 +230,32 @@ void def_serial(py::module m) {
                 auto info = buffer.request();
                 if (!PyBuffer_IsContiguous(info.view(), 'C')) {
                     throw std::runtime_error(
-                            "pypdu.loads only accepts contiguous row-major (C "
+                            "couchbasepypdu.loads only accepts contiguous row-major (C "
                             "style) buffers");
                 }
                 if (info.ndim != 1) {
                     throw std::runtime_error(
-                            "pypdu.loads only accepts one dimensional buffers");
+                            "couchbasepypdu.loads only accepts one dimensional buffers");
                 }
                 if (info.format != py::format_descriptor<uint8_t>::format()) {
                     throw std::runtime_error(
-                            "pypdu.loads only accepts one dimensional buffers "
+                            "couchbasepypdu.loads only accepts one dimensional buffers "
                             "of bytes");
                 }
 
                 if (info.itemsize != 1) {
                     throw std::runtime_error(
-                            "pypdu.loads only accepts one dimensional buffers "
+                            "couchbasepypdu.loads only accepts one dimensional buffers "
                             "of bytes");
                 }
 
                 if (info.size < 0) {
                     throw std::runtime_error(
-                            "pypdu.loads received invalid buffer");
+                            "couchbasepypdu.loads received invalid buffer");
                 }
                 if (info.size == 0) {
                     throw std::runtime_error(
-                            "pypdu.loads received empty buffer");
+                            "couchbasepypdu.loads received empty buffer");
                 }
 
                 Decoder d(reinterpret_cast<char*>(info.ptr), size_t(info.size));
