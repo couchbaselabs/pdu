@@ -8,25 +8,25 @@ jobs:
 
   build-manylinux-3_X:
     name: Build manylinux wheels (Python3.X)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
         CIBW_BUILD: '{cp,pp}3*manylinux*x86_64'
         CIBW_SKIP: '{cp,pp}3{6,7}*'
-        CIBW_MANYLINUX_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
-        CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "supportbot900/pypibuilders:manylinux_amd64"
+        CIBW_MANYLINUX_X86_64_IMAGE: "jameseh96/manylinux2014_x86_64_vcpkg"
+        CIBW_MANYLINUX_PYPY_X86_64_IMAGE: "jameseh96/manylinux2014_x86_64_vcpkg"
     steps:
       - uses: actions/checkout@master
         with:
           submodules: recursive
       - name: build wheels
-        uses: pypa/cibuildwheel@v2.23.3
+        uses: pypa/cibuildwheel@v2.21.1
       - uses: actions/upload-artifact@v4
         with:
             name: manylinux-3_X
             path: wheelhouse/*.whl
   upload:
     name: Publish to PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [build-manylinux-3_X]
     steps:
       - name: Create ./dist
